@@ -667,10 +667,28 @@ def extract_evidence_from_source(
         return []
 
     try:
+        # Deep PDF Passage Chunking: focus long scientific documents on highest-signal 350-word passages
+        if len(content_to_use) >= 3500 and gemini_client is not None:
+            try:
+                from .semantic_indexer import extract_relevant_passages
+                query_focus = f"{question_text} {' '.join(evidence_needed)}"
+                focused_content, _ = extract_relevant_passages(
+                    gemini_client,
+                    content_to_use,
+                    query_prompt=query_focus,
+                    top_k=5,
+                    min_chars_to_chunk=3500
+                )
+                if focused_content and len(focused_content) >= 800:
+                    content_to_use = focused_content
+            except Exception:
+                pass
+
         # Bounded text snippet limit to prevent prompt overflows while giving maximum context
         max_chars = 30000
         if len(content_to_use) > max_chars:
             content_to_use = content_to_use[:max_chars]
+
 
         prompt = f"""
 You are a precise evidence extraction agent in an autonomous research system.

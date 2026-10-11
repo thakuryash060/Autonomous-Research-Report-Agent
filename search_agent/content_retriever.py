@@ -115,6 +115,37 @@ def _assess_content_status(text: str) -> str:
     return "snippet_only"
 
 
+class FullTextAccessState:
+    FULL_PDF_PARSED = "full_pdf_parsed"
+    ABSTRACT_ONLY = "abstract_only"
+    PAYWALLED_METADATA = "paywalled_metadata"
+    EXTRACTION_FAILED = "extraction_failed"
+
+
+def determine_access_state(source: dict) -> str:
+    """
+    Map retrieval status and text length into standardized access states:
+    - full_pdf_parsed: Comprehensive full text or PDF parsed (empirical results accessible)
+    - abstract_only: Open access or repository abstract without full body text
+    - paywalled_metadata: Only bibliographic metadata (title, doi, citation count)
+    - extraction_failed: Retrieval failed with no accessible textual evidence
+    """
+    c_status = source.get("content_status", "snippet_only")
+    retrieved = source.get("retrieved_content", "") or ""
+    snippet = source.get("content", "") or ""
+    has_text = bool((retrieved and retrieved.strip()) or (snippet and snippet.strip()))
+
+    if c_status == "full":
+        return FullTextAccessState.FULL_PDF_PARSED
+    elif c_status == "partial" or (has_text and (len(snippet) >= 80 or bool(source.get("abstract")))):
+        return FullTextAccessState.ABSTRACT_ONLY
+    elif has_text:
+        return FullTextAccessState.PAYWALLED_METADATA
+    return FullTextAccessState.EXTRACTION_FAILED
+
+
+
+
 def retrieve_selected_sources(
     tavily_client,
     unique_selected_sources
@@ -325,7 +356,13 @@ def retrieve_selected_sources(
                 source["retrieved_content"] = snippet_text
                 source["retrieval_error"] = None
 
-    # Re-tally statistics
+    # Re-tally statistics and tag standardized access states
+    access_dist = {}
+    for s in unique_selected_sources:
+        astate = determine_access_state(s)
+        s["access_state"] = astate
+        access_dist[astate] = access_dist.get(astate, 0) + 1
+
     successes = sum(1 for s in unique_selected_sources if s.get("content_status") == "full")
     partials = sum(1 for s in unique_selected_sources if s.get("content_status") == "partial")
     snippet_only = sum(1 for s in unique_selected_sources if s.get("content_status") == "snippet_only")
@@ -337,5 +374,7 @@ def retrieve_selected_sources(
         "partials": partials,
         "snippet_only": snippet_only,
         "failures": failures,
-        "fallbacks_used": fallbacks_used
+        "fallbacks_used": fallbacks_used,
+        "access_state_distribution": access_dist
     }
+

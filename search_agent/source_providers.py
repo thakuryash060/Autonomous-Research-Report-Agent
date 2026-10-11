@@ -521,6 +521,98 @@ register_provider("openalex", OpenAlexProvider())
 register_provider("semanticscholar", SemanticScholarProvider())
 
 
+class ProviderCircuitBreaker:
+    """Tracks provider health, failure counts, and circuit open/closed states."""
+    def __init__(self, failure_threshold: int = 3, reset_timeout_seconds: float = 60.0):
+        self.failure_threshold = failure_threshold
+        self.reset_timeout_seconds = reset_timeout_seconds
+        self.failure_counts: dict = {}
+        self.circuit_open_until: dict = {}
+
+    def record_success(self, provider_name: str):
+        self.failure_counts[provider_name] = 0
+        self.circuit_open_until.pop(provider_name, None)
+
+    def record_failure(self, provider_name: str):
+        count = self.failure_counts.get(provider_name, 0) + 1
+        self.failure_counts[provider_name] = count
+        if count >= self.failure_threshold:
+            self.circuit_open_until[provider_name] = time.time() + self.reset_timeout_seconds
+
+    def is_available(self, provider_name: str) -> bool:
+        if provider_name not in self.circuit_open_until:
+            return True
+        if time.time() > self.circuit_open_until[provider_name]:
+            # Half-open: attempt recovery
+            self.circuit_open_until.pop(provider_name, None)
+            self.failure_counts[provider_name] = 0
+            return True
+        return False
+
+
+_CIRCUIT_BREAKER = ProviderCircuitBreaker()
+
+
+def execute_providers_independently(
+    provider_names,
+    query_text: str,
+    question_id: str = None,
+    timeout_per_provider: float = 12.0,
+    **kwargs
+) -> dict:
+    """
+    Execute multiple academic providers independently in parallel.
+    Guarantees fault isolation: failures or timeouts in one provider do not block
+    or corrupt execution of other providers.
+    """
+    import concurrent.futures
+
+    results_by_provider = {}
+    provider_errors = {}
+    combined_sources = []
+
+    def _run_single(p_name):
+        if not _CIRCUIT_BREAKER.is_available(p_name):
+            return p_name, [], f"Circuit breaker open (consecutive failures)"
+
+        prov = get_provider(p_name)
+        if prov is None:
+            return p_name, [], f"Provider '{p_name}' not registered"
+
+        try:
+            items = prov.search(query_text, question_id=question_id, **kwargs)
+            _CIRCUIT_BREAKER.record_success(p_name)
+            return p_name, items, None
+        except Exception as exc:
+            _CIRCUIT_BREAKER.record_failure(p_name)
+            return p_name, [], str(exc)
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=len(provider_names) or 1) as executor:
+        futures = {executor.submit(_run_single, name): name for name in provider_names}
+        for future in concurrent.futures.as_completed(futures):
+            p_name = futures[future]
+            try:
+                name, items, err = future.result(timeout=timeout_per_provider + 1.0)
+                if err:
+                    provider_errors[name] = err
+                    results_by_provider[name] = []
+                else:
+                    results_by_provider[name] = items
+                    combined_sources.extend(items)
+            except Exception as exc:
+                provider_errors[p_name] = f"Timeout or fatal error: {exc}"
+                results_by_provider[p_name] = []
+                _CIRCUIT_BREAKER.record_failure(p_name)
+
+    return {
+        "sources": combined_sources,
+        "results_by_provider": results_by_provider,
+        "errors": provider_errors,
+        "success_providers": [p for p, res in results_by_provider.items() if res],
+    }
+
+
+
 if __name__ == "__main__":
     provider = OpenAlexProvider()
     print("Testing OpenAlex provider...")
