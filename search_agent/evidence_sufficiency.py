@@ -159,12 +159,13 @@ def evaluate_evidence_sufficiency(
     missing_requirements = []
     evidence_gaps = []
 
-    effective_source_count = max(selected_source_count, useful_source_count)
+    contributing_sources = len(source_finding_counts) if source_finding_counts else (useful_source_count if useful_source_count > 0 else selected_source_count)
+    effective_source_count = contributing_sources
     if effective_source_count < min_sources:
         missing_requirements.append("insufficient_sources")
         evidence_gaps.append(
-            f"Selected {effective_source_count} sources, "
-            f"but {min_sources} required."
+            f"Only {effective_source_count} contributing sources, "
+            f"but {min_sources} required (selected: {selected_source_count})."
         )
 
     if min_primary > 0 and primary_source_count < min_primary:
@@ -201,7 +202,7 @@ def evaluate_evidence_sufficiency(
                 f"but {min_counter} required (total findings: {counter_count})."
             )
 
-    # Source concentration check
+    # Source concentration check: prevents single-source dominance from bypassing corroboration
     max_findings_from_single_source = max(source_finding_counts.values()) if source_finding_counts else 0
     high_concentration = (
         finding_count >= 4
@@ -209,10 +210,14 @@ def evaluate_evidence_sufficiency(
         and (max_findings_from_single_source / finding_count) > 0.65
     )
     if high_concentration:
+        if min_sources >= 2 and len(source_finding_counts) < min_sources:
+            missing_requirements.append("excessive_source_concentration")
         evidence_gaps.append(
             f"High evidence concentration: {max_findings_from_single_source}/{finding_count} "
             f"findings originate from a single source. Independent replication needed."
         )
+
+
 
     if successful_retrieval_count == 0 and finding_count == 0:
         evidence_gaps.append(

@@ -971,6 +971,16 @@ def extract_research_evidence(
     all_findings_list = []
     question_raw_findings = {}
 
+    sources_by_sid = {}
+    for qid, q_data in per_question_sel.items():
+        for src, _ in q_data.get("selected_sources", []):
+            if isinstance(src, dict) and src.get("source_id"):
+                sources_by_sid[str(src["source_id"]).strip().upper()] = src
+    for src in selection_bundle.get("unique_selected_sources", []):
+        if isinstance(src, dict) and src.get("source_id"):
+            sources_by_sid[str(src["source_id"]).strip().upper()] = src
+
+
     existing_q_findings = {}
     already_extracted_sources_by_qid = {}
     if existing_extraction_bundle:
@@ -1191,12 +1201,19 @@ def extract_research_evidence(
             if not _is_cross_routing_allowed(orig_qid, question, other_f):
                 continue
 
+            # Retrieve authentic source text for cross-validation
+            orig_src = sources_by_sid.get(str(sid).strip().upper(), {}) if sid else {}
+            orig_source_text = orig_src.get("retrieved_content", "") or orig_src.get("content", "")
+            if not orig_source_text:
+                orig_source_text = " ".join(e.get("evidence_text", "") for e in other_f.get("evidence", []))
+
             # Strict EVL gate on candidate finding for this target question
             is_valid, validated_routed, reasons = EvidenceValidator.validate_finding(
                 other_f,
                 question,
-                source_text=""
+                source_text=orig_source_text
             )
+
             if is_valid:
                 # If target question requires quantitative evidence and routed finding has no valid quantitative records for it,
                 # re-extract heuristic quantitative records tailored to this target question from the finding's text

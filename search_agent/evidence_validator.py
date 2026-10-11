@@ -283,8 +283,11 @@ class EvidenceValidator:
         if not ev_list:
             return False, "No supporting excerpts provided"
 
-        if not source_text:
-            return True, "Source text not provided for verification"
+
+        if not source_text or not str(source_text).strip():
+            return False, "UNVERIFIABLE: Source text not provided for verification"
+
+
 
         clean_source = _clean_text_for_comparison(source_text)
         source_words = set(clean_source.split())
@@ -337,7 +340,36 @@ class EvidenceValidator:
             if not exact_overlap and not stem_overlap:
                 return False, "Claim shares zero substantive concepts with cited evidence excerpts"
 
+        # Check directional semantic contradiction & negation flipping
+        ev_all_raw = " ".join(str(e.get("evidence_text", "")) for e in ev_list)
+        claim_lower = claim.lower()
+        ev_lower = ev_all_raw.lower()
+
+        claim_asserts_improvement = bool(re.search(r"\b(outperforms?|superior|improves?|increases?|higher|better|improvement)\b", claim_lower))
+        evidence_negates_improvement = bool(re.search(r"\b(no (?:statistically )?significant|did not (?:improve|outperform)|fails? to (?:improve|outperform)|no improvement|underperforms?|inferior)\b", ev_lower))
+        if claim_asserts_improvement and evidence_negates_improvement:
+            return False, "Semantic contradiction: Claim asserts improvement but cited evidence negates it"
+
+        # Numerical comparison reversal check:
+        # e.g., "method achieved 82%, while baseline achieved 90%" vs claim "method outperforms baseline"
+        baseline_match = re.search(r"\b(baseline|control|standard|prior)\b[^\d]{1,40}(\d+(?:\.\d+)?)\s*%", ev_lower)
+        target_match = re.search(r"\b(proposed|method|our|model|approach)\b[^\d]{1,40}(\d+(?:\.\d+)?)\s*%", ev_lower)
+        if not target_match:
+            target_match = re.search(r"(\d+(?:\.\d+)?)\s*%\s*(?:accuracy|f1|score)?[^\w]{1,10}(?:while|whereas|compared to)\b", ev_lower)
+
+        if baseline_match and target_match and claim_asserts_improvement:
+            try:
+                base_val = float(baseline_match.group(2))
+                target_val = float(target_match.group(2) if target_match.lastindex >= 2 else target_match.group(1))
+                if target_val < base_val:
+                    return False, f"Directional contradiction: Target score ({target_val}%) is lower than baseline ({base_val}%), but claim asserts superiority"
+            except (ValueError, IndexError):
+                pass
+
+
         return True, "Passed Claim Support"
+
+
 
     @classmethod
     def validate_quantitative_validity(cls, finding: dict, question: dict, source_text: str) -> Tuple[bool, List[dict], str]:
