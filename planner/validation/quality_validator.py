@@ -156,5 +156,11 @@ def validate_plan_quality(plan: dict) -> dict:
             "Plan contains a hypothesis but no falsification_criteria were provided."
         )
 
+    # 5. Scientific Feasibility & Calibrated Benchmark Evaluation
+    from .plan_quality_benchmark import evaluate_plan_quality
+    benchmark_report = evaluate_plan_quality(plan)
+    plan["plan_quality_benchmark"] = benchmark_report
+
     return plan
+
 

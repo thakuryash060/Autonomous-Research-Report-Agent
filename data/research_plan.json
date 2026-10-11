@@ -1,127 +1,125 @@
 {
-  "topic": "Does retrieval-augmented generation (RAG) consistently reduce hallucinations in large language models compared with non-retrieval baselines?",
+  "topic": "What is unique in you system other than gemini??",
   "domain": "AI/ML",
-  "research_mode": "evaluative",
+  "research_mode": "comparative",
   "temporal_sensitivity": "high",
-  "hypothesis": "Retrieval-augmented generation reduces hallucination rates in large language models compared to non-retrieval baselines across standard knowledge-intensive benchmarks, though reduction magnitude varies by retrieval quality and domain.",
+  "hypothesis": "The autonomous research system incorporates architectural differentiators, execution workflows, and planning mechanisms that distinguish its performance and capability profile from Gemini.",
   "competing_hypotheses": [
-    "RAG consistently reduces hallucinations across all evaluated domains and base model sizes without introducing new failure modes.",
-    "RAG does not materially reduce hallucinations compared to well-tuned non-retrieval baselines when prompt engineering or parametric memory is optimized.",
-    "RAG reduces factual hallucinations but increases citation errors, context confusion, or irrelevance hallucinations depending on retriever quality."
+    "The system does not possess any significant architectural or functional differentiators compared to Gemini.",
+    "Any unique features are superficial wrappers around standard foundational model capabilities without underlying workflow differences.",
+    "The unique aspects are primarily in orchestration and structured execution contracts rather than core model training."
   ],
   "falsification_criteria": [
-    "Controlled benchmark studies demonstrating statistically significant higher or equivalent hallucination rates in RAG configurations compared to non-retrieval baselines across multiple distinct tasks.",
-    "Evidence showing that hallucination reductions are entirely attributable to increased model scale rather than the retrieval mechanism itself."
+    "Discovery of system documentation demonstrating identical underlying orchestration and lack of custom planning agents.",
+    "Evidence showing that all outputs are generated through unmodified direct prompts to Gemini without intermediary agentic loops."
   ],
   "evaluation_criteria": [
-    "Hallucination rate: The proportion of generated claims that are factually unsupported by the provided context or ground truth.",
-    "Citation precision and recall: The accuracy with which retrieved passages are cited to support generated factual claims.",
-    "Baseline comparability: Ensuring non-retrieval baselines are evaluated on identical prompts, decoding parameters, and evaluation datasets."
+    "Assessment of architectural modularity, specifically the presence of independent planning, search, and synthesis agents.",
+    "Comparison of execution workflows, particularly structured output enforcement and machine-executable contracts.",
+    "Evaluation of multi-step reasoning capabilities versus direct generation benchmarks."
   ],
   "source_policy": {
     "tiers": [
       {
         "tier": 1,
         "source_types": [
-          "peer-reviewed conference paper",
-          "peer-reviewed journal article",
-          "academic preprint from reputable repository"
+          "official technical documentation",
+          "system architecture specifications",
+          "peer-reviewed technical papers"
         ],
         "role": "evidence"
       },
       {
         "tier": 2,
         "source_types": [
-          "official technical report",
-          "benchmark documentation",
-          "systematic review"
+          "developer logs",
+          "official release notes",
+          "API specifications"
         ],
         "role": "evidence"
       },
       {
         "tier": 3,
         "source_types": [
-          "industry research blog",
-          "technical documentation"
+          "technical blogs",
+          "industry analysis articles",
+          "expert commentary"
         ],
         "role": "discovery"
       }
     ],
     "evidence_eligible_source_types": [
-      "peer-reviewed conference paper",
-      "peer-reviewed journal article",
-      "academic preprint from reputable repository",
-      "official technical report",
-      "benchmark documentation",
-      "systematic review"
+      "official technical documentation",
+      "system architecture specifications",
+      "peer-reviewed technical papers",
+      "developer logs",
+      "official release notes",
+      "API specifications"
     ],
     "discovery_only_source_types": [
-      "industry research blog",
-      "technical documentation"
+      "technical blogs",
+      "industry analysis articles",
+      "expert commentary"
     ]
   },
   "global_source_requirements": {
-    "minimum_counter_evidence_sources": 3,
-    "minimum_total_sources": 12,
-    "minimum_primary_sources": 8,
-    "minimum_peer_reviewed_sources": 6,
-    "minimum_quantitative_sources": 8
+    "minimum_primary_sources": 4,
+    "minimum_peer_reviewed_sources": 2,
+    "minimum_counter_evidence_sources": 2,
+    "minimum_quantitative_sources": 2,
+    "minimum_total_sources": 8
   },
   "source_diversity_requirements": [
-    "research groups",
-    "benchmarks",
-    "base model architectures",
-    "retrieval algorithms"
+    "system architecture types",
+    "documentation sources",
+    "implementation frameworks",
+    "evaluation benchmarks"
   ],
   "questions": [
     {
       "id": "Q1",
       "type": "definition",
       "priority": "high",
-      "question": "How are hallucinations in large language models defined and measured in the context of retrieval-augmented generation evaluations?",
+      "question": "What are the core architectural components and multi-agent workflows defined in this system?",
       "evidence_needed": [
-        "hallucination taxonomy",
-        "evaluation metrics",
-        "benchmark datasets"
+        "system architecture specifications",
+        "agent roles",
+        "workflow definitions"
       ],
       "search_strategy": {
         "primary_queries": [
-          "hallucination definition measurement large language models",
-          "retrieval augmented generation hallucination metrics"
+          "autonomous research system architecture components",
+          "multi-agent research workflow specification"
         ],
         "secondary_queries": [
-          "factual consistency evaluation benchmarks LLM RAG",
-          "taxonomy of hallucinations in text generation"
+          "planner agent evidence extraction synthesis agent",
+          "machine-executable research strategy design"
         ],
         "counter_evidence_queries": [
-          "limitations of hallucination evaluation metrics RAG",
-          "discrepancies in automated hallucination detection benchmarks"
+          "standard LLM single prompt generation limitations",
+          "monolithic model execution versus multi-agent workflows"
         ]
       },
       "preferred_source_types": [
-        "peer-reviewed conference paper",
-        "systematic review"
+        "official technical documentation",
+        "system architecture specifications"
       ],
       "source_requirements": {
-        "minimum_sources": 3,
         "minimum_counter_evidence_sources": 1,
-        "minimum_primary_sources": 2,
-        "minimum_quantitative_sources": 1
+        "minimum_sources": 3,
+        "minimum_quantitative_sources": 0,
+        "minimum_primary_sources": 2
       },
-      "requires_quantitative_evidence": true,
-      "quantitative_fields": [
-        "metric",
-        "dataset",
-        "task"
-      ],
+      "requires_quantitative_evidence": false,
+      "quantitative_fields": [],
       "experimental_context_fields": [
-        "task",
-        "evaluation methodology"
+        "system architecture",
+        "workflow definition"
       ],
       "requires_counter_evidence": true,
       "boundary_conditions": [
-        "evaluation metric design",
-        "dataset domain specificity"
+        "system version",
+        "implementation scope"
       ],
       "depends_on": []
     },
@@ -129,65 +127,52 @@
       "id": "Q2",
       "type": "comparison",
       "priority": "high",
-      "question": "What empirical evidence demonstrates the impact of retrieval-augmented generation on hallucination rates compared with non-retrieval baselines?",
+      "question": "How do the orchestration mechanisms and output contracts of this system compare to standard Gemini interaction patterns?",
       "evidence_needed": [
-        "model",
-        "dataset",
-        "benchmark",
-        "baseline",
-        "metric",
-        "hallucination rate",
-        "absolute difference",
-        "relative difference"
+        "structured output schema enforcement",
+        "interaction workflow comparison",
+        "API execution patterns"
       ],
       "search_strategy": {
         "primary_queries": [
-          "retrieval augmented generation reduces hallucinations empirical comparison",
-          "RAG vs non-retrieval baseline hallucination rate benchmark"
+          "system orchestration versus Gemini API",
+          "structured output contracts in autonomous research systems"
         ],
         "secondary_queries": [
-          "impact of context retrieval on factual accuracy in LLMs",
-          "comparative evaluation of RAG and parametric memory accuracy"
+          "JSON schema enforcement in LLM agents",
+          "comparative analysis of AI agent frameworks and foundational models"
         ],
         "counter_evidence_queries": [
-          "studies showing no reduction in hallucinations from RAG",
-          "failures of retrieval augmented generation to reduce factual errors"
+          "native structured output capabilities in Gemini",
+          "similarities between agentic wrappers and base models"
         ]
       },
       "preferred_source_types": [
-        "peer-reviewed conference paper",
-        "official technical report"
+        "system architecture specifications",
+        "API specifications",
+        "official technical documentation"
       ],
       "source_requirements": {
-        "minimum_sources": 5,
-        "minimum_counter_evidence_sources": 2,
-        "minimum_primary_sources": 4,
-        "minimum_quantitative_sources": 4
+        "minimum_counter_evidence_sources": 1,
+        "minimum_sources": 3,
+        "minimum_quantitative_sources": 1,
+        "minimum_primary_sources": 2
       },
       "requires_quantitative_evidence": true,
       "quantitative_fields": [
-        "model",
-        "dataset",
-        "baseline",
-        "metric",
-        "baseline_score",
-        "experimental_score",
         "absolute_difference",
-        "relative_difference"
+        "relative_difference",
+        "schema compliance rate"
       ],
       "experimental_context_fields": [
         "model",
-        "model size",
-        "dataset",
-        "retriever",
-        "top-k",
-        "evaluation metric"
+        "evaluation metric",
+        "experimental setup"
       ],
       "requires_counter_evidence": true,
       "boundary_conditions": [
-        "model size",
-        "retrieval quality",
-        "knowledge domain"
+        "API version",
+        "prompt structuring parameters"
       ],
       "depends_on": [
         "Q1"
@@ -195,87 +180,82 @@
     },
     {
       "id": "Q3",
-      "type": "boundary_conditions",
+      "type": "limitations",
       "priority": "medium",
-      "question": "Under what conditions or retrieval failures does retrieval-augmented generation fail to reduce or even exacerbate hallucinations?",
+      "question": "What are the limitations, failure modes, and dependency constraints unique to this system's multi-agent design?",
       "evidence_needed": [
-        "retrieval configuration",
-        "retrieval quality",
-        "noise injection",
-        "hallucination rate",
-        "ablation evidence"
+        "error handling logs",
+        "agent dependency failure analysis",
+        "performance bottlenecks"
       ],
       "search_strategy": {
         "primary_queries": [
-          "retrieval failures increase hallucinations RAG",
-          "noisy context retrieval hallucination large language models"
+          "multi-agent system limitations and failure modes",
+          "bottlenecks in autonomous research planning"
         ],
         "secondary_queries": [
-          "ablation studies retrieval quality RAG hallucination",
-          "adversarial retrieval robustness LLM factual accuracy"
+          "error recovery in structured agent workflows",
+          "execution overhead in multi-agent LLM systems"
         ],
         "counter_evidence_queries": [
-          "robustness of LLMs to irrelevant retrieved context",
-          "conditions where RAG outperforms parametric memory despite noise"
+          "advantages of monolithic foundation models over multi-agent setups",
+          "overhead reduction in direct Gemini usage"
         ]
       },
       "preferred_source_types": [
-        "peer-reviewed conference paper",
-        "academic preprint from reputable repository"
+        "developer logs",
+        "official technical documentation"
       ],
       "source_requirements": {
-        "minimum_sources": 4,
         "minimum_counter_evidence_sources": 1,
-        "minimum_primary_sources": 3,
-        "minimum_quantitative_sources": 3
+        "minimum_sources": 2,
+        "minimum_quantitative_sources": 1,
+        "minimum_primary_sources": 1
       },
       "requires_quantitative_evidence": true,
       "quantitative_fields": [
-        "model",
-        "dataset",
-        "metric",
-        "experimental_method",
-        "absolute_difference"
+        "latency",
+        "compute",
+        "error rate"
       ],
       "experimental_context_fields": [
-        "retriever",
-        "embedding model",
-        "top-k",
+        "task",
+        "compute budget",
         "experimental setup"
       ],
       "requires_counter_evidence": true,
       "boundary_conditions": [
-        "retriever precision",
-        "context length limits",
-        "contradictory retrieved documents"
+        "compute constraints",
+        "network latency"
       ],
       "depends_on": [
+        "Q1",
         "Q2"
       ]
     }
   ],
   "evidence_sufficiency": {
-    "high": "Multiple strong independent peer-reviewed studies report consistent quantitative reductions in hallucination rates across standardized benchmarks with controlled baselines.",
-    "medium": "Useful empirical evidence exists showing general hallucination reduction, but studies vary in benchmark selection, retriever configurations, or baseline tuning.",
-    "insufficient": "Available evidence lacks standardized metrics, controlled baselines, or quantitative measurements necessary to justify a conclusion.",
-    "low": "Evidence is sparse, relying primarily on unverified preprints or narrow domains without rigorous non-retrieval baseline comparisons.",
-    "conflicting": "Comparable empirical studies support materially different conclusions regarding whether RAG consistently reduces hallucinations or introduces retrieval-induced errors."
+    "insufficient": "Available evidence cannot justify any conclusion regarding architectural differentiation.",
+    "high": "Multiple strong independent sources agree on specific architectural differentiators and workflow features.",
+    "low": "Evidence regarding unique features is weak, indirect, or based solely on marketing descriptions.",
+    "conflicting": "Comparable sources support materially different conclusions regarding the uniqueness of the system versus Gemini.",
+    "medium": "Useful architectural evidence exists, but comparative depth or performance metrics are limited."
   },
   "stopping_criteria": {
-    "require_major_claims_supported": true,
     "require_contradictions_investigated": true,
-    "require_quantitative_evidence_when_applicable": true,
-    "require_counter_evidence_when_applicable": true,
-    "require_all_high_priority_questions_covered": true,
-    "require_minimum_primary_sources": true,
     "require_minimum_total_sources": true,
+    "require_counter_evidence_when_applicable": true,
+    "require_minimum_primary_sources": true,
+    "require_major_claims_supported": true,
+    "require_all_high_priority_questions_covered": true,
+    "require_quantitative_evidence_when_applicable": true,
     "maximum_search_rounds": 3,
     "maximum_total_queries": 20
   },
   "claim_evidence_contract": {
-    "required": true,
     "distinguish_observation_interpretation_conclusion": true,
     "require_support_or_contradict_label": true,
+    "required": true,
     "require_source_location": true
   },
   "allowed_conclusion_statuses": [
@@ -301,17 +281,17 @@
       "contradicting_source_ids",
       "confidence"
     ],
-    "required_final_fields": [
-      "unanswered_questions",
-      "stopping_criteria",
-      "overall_conclusion"
-    ],
     "required_question_fields": [
       "id",
       "status",
       "claims",
       "quantitative_evidence",
       "limitations"
+    ],
+    "required_final_fields": [
+      "unanswered_questions",
+      "stopping_criteria",
+      "overall_conclusion"
     ]
   }
 }

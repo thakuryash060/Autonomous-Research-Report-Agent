@@ -49,6 +49,49 @@ RANKING_WEIGHTS = {
     "tavily": 0.15
 }
 
+
+def configure_ranking_weights(
+    relevance: float = 0.40,
+    source_quality: float = 0.25,
+    planner_preference: float = 0.20,
+    tavily: float = 0.15
+) -> dict:
+    """
+    Dynamically configure Phase 2 ranking weights.
+    Normalizes weights to ensure their sum equals 1.0.
+    """
+    total = relevance + source_quality + planner_preference + tavily
+    if total <= 0:
+        raise ValueError("Sum of ranking weights must be strictly positive.")
+    RANKING_WEIGHTS["relevance"] = round(relevance / total, 4)
+    RANKING_WEIGHTS["source_quality"] = round(source_quality / total, 4)
+    RANKING_WEIGHTS["planner_preference"] = round(planner_preference / total, 4)
+    RANKING_WEIGHTS["tavily"] = round(tavily / total, 4)
+    return dict(RANKING_WEIGHTS)
+
+
+def compute_reciprocal_rank_fusion(
+    ranked_lists: list[list[str]],
+    weights: list[float] = None,
+    k: int = 60
+) -> dict[str, float]:
+    """
+    Reciprocal Rank Fusion (RRF) for combining distinct retrieval and ranking signals
+    (e.g., Sparse BM25 + Dense Vector Cosine Similarity + Quality Heuristics).
+    RRF(d) = sum_{r in R} (w_r / (k + rank_r(d)))
+    """
+    if weights is None:
+        weights = [1.0] * len(ranked_lists)
+
+    scores: dict[str, float] = {}
+    for r_idx, ranked_items in enumerate(ranked_lists):
+        w = weights[r_idx] if r_idx < len(weights) else 1.0
+        for rank, item_id in enumerate(ranked_items, start=1):
+            scores[item_id] = scores.get(item_id, 0.0) + (w / (k + rank))
+
+    return scores
+
+
 EVIDENCE_ELIGIBLE_SOURCE_TYPES = {
     "systematic_review",
     "peer_reviewed_paper",
