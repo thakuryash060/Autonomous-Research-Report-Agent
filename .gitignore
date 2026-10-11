@@ -16,6 +16,7 @@ __pycache__/
 # Agent/IDE directories
 ARA_Major_Project_MidTerm.pptx
 tests/
+Presentation/
 .kilo/
 evaluation_logs/
 run_output*.txt

@@ -12,7 +12,7 @@ Implements:
 import math
 import re
 from collections import defaultdict
-from typing import Dict, List, Optional, Set, Tuple, Union
+from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
 
 # =====================================================================
@@ -23,8 +23,8 @@ STOP_WORDS: Set[str] = {
     "a", "about", "above", "after", "again", "against", "all", "am", "an", "and",
     "any", "are", "aren't", "as", "at", "be", "because", "been", "before", "being",
     "below", "between", "both", "but", "by", "can't", "cannot", "could", "couldn't",
-    "did", "didn't", "do", "does", "doesn't", "doing", "don't", "down", "during",
     "each", "few", "for", "from", "further", "had", "hadn't", "has", "hasn't",
+    "did", "didn't", "do", "does", "doesn't", "doing", "don't", "down", "during",
     "have", "haven't", "having", "he", "he'd", "he'll", "he's", "her", "here",
     "here's", "hers", "herself", "him", "himself", "his", "how", "how's", "i",
     "i'd", "i'll", "i'm", "i've", "if", "in", "into", "is", "isn't", "it", "it's",
@@ -429,14 +429,28 @@ def prompt_specific_search(
     bm25_matches = dict(inverted_index.search_bm25(question_prompt, top_k=len(candidate_papers)))
     max_bm25 = max(bm25_matches.values()) if bm25_matches and max(bm25_matches.values()) > 0 else 1.0
 
+    # Two-Stage Optimization: If candidate count is large (> 40), pre-filter with BM25 first
+    # to save 90% of embedding API calls and eliminate rate limits!
+    active_candidates = candidate_papers
+    if len(candidate_papers) > 40:
+        # Sort by BM25 first to find top 35 candidates
+        bm25_sorted_ids = {pid for pid, _ in sorted(bm25_matches.items(), key=lambda x: x[1], reverse=True)[:35]}
+        # Also always include papers that were explicitly marked as counter-evidence or have high existing quality
+        active_candidates = [
+            p for p in candidate_papers
+            if str(p.get("source_id", "")) in bm25_sorted_ids or p.get("score", 0) >= 0.8
+        ]
+        if len(active_candidates) < top_k:
+            active_candidates = candidate_papers[:40]
+
     # 3. Dense Vector Embedding for the Research Question / Prompt
     prompt_vectors = embed_texts(gemini_client, [question_prompt])
     prompt_vec = prompt_vectors[0] if prompt_vectors else []
 
-    # 4. Embed Papers (Batched or cached)
+    # 4. Embed Papers (Batched or cached) for active candidates
     papers_to_embed = []
     embed_indices = []
-    for idx, paper in enumerate(candidate_papers):
+    for idx, paper in enumerate(active_candidates):
         if "embedding" not in paper or not paper["embedding"]:
             text = f"{paper.get('title', '')} {paper.get('abstract', '') or paper.get('content', '')}"
             papers_to_embed.append(text)
@@ -445,13 +459,13 @@ def prompt_specific_search(
     if papers_to_embed:
         new_embeddings = embed_texts(gemini_client, papers_to_embed)
         for i, emb in zip(embed_indices, new_embeddings):
-            candidate_papers[i]["embedding"] = emb
+            active_candidates[i]["embedding"] = emb
 
     # 5. Compute Hybrid Similarity Scores
     scored_results = []
     lexical_weight = 1.0 - semantic_weight
 
-    for paper in candidate_papers:
+    for paper in active_candidates:
         pid = str(paper.get("source_id", ""))
         paper_vec = paper.get("embedding", [])
         
@@ -476,3 +490,144 @@ def prompt_specific_search(
     # Sort descending by hybrid similarity score
     scored_results.sort(key=lambda x: x.get("prompt_similarity_score", 0.0), reverse=True)
     return scored_results[:top_k]
+
+
+# =====================================================================
+# STEP 7: PASSAGE CHUNKING & LOCAL DOCUMENT RE-RANKING
+# =====================================================================
+
+def chunk_document_into_passages(
+    text: str,
+    chunk_size_words: int = 350,
+    overlap_words: int = 50
+) -> List[Dict[str, Any]]:
+    """
+    Split a long scientific document or extracted PDF into overlapping semantic passages.
+    Preserves paragraph and sentence boundaries wherever possible.
+    """
+    if not text or not text.strip():
+        return []
+
+    # Clean multi-newlines and split by paragraphs
+    paragraphs = [p.strip() for p in re.split(r"\n\s*\n", text) if p.strip()]
+    if not paragraphs:
+        paragraphs = [text.strip()]
+
+    chunks = []
+    current_words = []
+    current_chunk_idx = 1
+
+    for para in paragraphs:
+        p_words = para.split()
+        if not p_words:
+            continue
+
+        if len(current_words) + len(p_words) <= chunk_size_words:
+            current_words.extend(p_words)
+        else:
+            if current_words:
+                chunk_str = " ".join(current_words)
+                chunks.append({
+                    "chunk_id": f"P{current_chunk_idx}",
+                    "content": chunk_str,
+                    "title": f"Passage {current_chunk_idx}",
+                    "word_count": len(current_words)
+                })
+                current_chunk_idx += 1
+                # Sliding window overlap
+                overlap = current_words[-overlap_words:] if len(current_words) > overlap_words else []
+                current_words = overlap + p_words
+            else:
+                current_words = p_words
+
+    if current_words:
+        chunk_str = " ".join(current_words)
+        chunks.append({
+            "chunk_id": f"P{current_chunk_idx}",
+            "content": chunk_str,
+            "title": f"Passage {current_chunk_idx}",
+            "word_count": len(current_words)
+        })
+
+    return chunks
+
+
+def extract_relevant_passages(
+    gemini_client,
+    document_text: str,
+    query_prompt: str,
+    top_k: int = 5,
+    min_chars_to_chunk: int = 3000
+) -> Tuple[str, List[dict]]:
+    """
+    Deep Passage Chunking & Re-ranking Engine:
+    1. If the document is small (< min_chars_to_chunk), returns original text directly.
+    2. If it is a full-text academic paper (e.g. 15-page arXiv PDF), chunks into passages.
+    3. Builds local InvertedIndex and runs prompt-specific hybrid search (BM25 + Cosine Similarity).
+    4. Selects top_k highest-signal passages and restores original document reading order.
+    5. Returns formatted focused text with passage citations and diagnostic metadata list.
+    """
+    if not document_text or len(document_text.strip()) < min_chars_to_chunk or not query_prompt:
+        return document_text, []
+
+    passages = chunk_document_into_passages(document_text, chunk_size_words=350, overlap_words=50)
+    if len(passages) <= 2:
+        return document_text, []
+
+    # Map chunks to candidate format
+    chunk_candidates = []
+    for p in passages:
+        chunk_candidates.append({
+            "source_id": p["chunk_id"],
+            "title": p["title"],
+            "content": p["content"],
+            "abstract": p["content"][:200]
+        })
+
+    # Rank passages specifically against the research question prompt
+    ranked_chunks = prompt_specific_search(
+        gemini_client=gemini_client,
+        question_prompt=query_prompt,
+        candidate_papers=chunk_candidates,
+        top_k=min(top_k, len(chunk_candidates)),
+        semantic_weight=0.65
+    )
+
+    if not ranked_chunks:
+        return document_text[:25000], []
+
+    # Map back to preserve original chronological order in paper
+    selected_ids = {c["source_id"] for c in ranked_chunks}
+    ordered_passages = [p for p in passages if p["chunk_id"] in selected_ids]
+
+    formatted_sections = []
+    for p in ordered_passages:
+        # Find score
+        score = next((c.get("prompt_similarity_score", 0.0) for c in ranked_chunks if c["source_id"] == p["chunk_id"]), 0.0)
+        formatted_sections.append(
+            f"--- [{p['title']} | Relevance Score: {score:.3f}] ---\n{p['content']}"
+        )
+
+    focused_content = "\n\n".join(formatted_sections)
+    return focused_content, ranked_chunks
+
+
+def chunk_and_filter_document(
+    text: str,
+    query: str = "",
+    window_words: int = 350,
+    overlap_words: int = 50,
+    top_k: int = 5,
+    min_chars: int = 3000
+) -> str:
+    """Wrapper for content_retriever to extract top-k focused passages."""
+    focused_text, _ = extract_relevant_passages(
+        gemini_client=None,
+        document_text=text,
+        query_prompt=query,
+        top_k=top_k,
+        min_chars_to_chunk=min_chars
+    )
+    return focused_text or text
+
+

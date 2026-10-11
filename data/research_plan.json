@@ -1,193 +1,196 @@
 {
-  "topic": "Does retrieval-augmented generation (RAG) consistently reduce hallucinations in large language models compared with non-retrieval baselines?",
-  "domain": "AI/ML",
+  "topic": "The Impact of Generative AI on Software Developer Productivity and Code Quality",
+  "domain": "Technology",
   "research_mode": "evaluative",
   "temporal_sensitivity": "high",
-  "hypothesis": "Retrieval-augmented generation reduces hallucination rates in large language models compared to non-retrieval baselines across standard knowledge-intensive benchmarks, though reduction magnitude varies by retrieval quality and domain.",
+  "hypothesis": "Generative AI tools significantly increase developer productivity for routine coding tasks while maintaining or slightly reducing initial code quality, requiring additional review effort.",
   "competing_hypotheses": [
-    "RAG consistently reduces hallucinations across all evaluated domains and base model sizes without introducing new failure modes.",
-    "RAG does not materially reduce hallucinations compared to well-tuned non-retrieval baselines when prompt engineering or parametric memory is optimized.",
-    "RAG reduces factual hallucinations but increases citation errors, context confusion, or irrelevance hallucinations depending on retriever quality."
+    "Generative AI dramatically increases both productivity and code quality across all software engineering tasks.",
+    "Generative AI provides minimal productivity gains after accounting for debugging and review time, and decreases long-term maintainability.",
+    "Productivity gains from generative AI are highly sensitive to developer experience level and task complexity."
   ],
   "falsification_criteria": [
-    "Controlled benchmark studies demonstrating statistically significant higher or equivalent hallucination rates in RAG configurations compared to non-retrieval baselines across multiple distinct tasks.",
-    "Evidence showing that hallucination reductions are entirely attributable to increased model scale rather than the retrieval mechanism itself."
+    "Controlled empirical studies showing no statistically significant productivity difference between developers using generative AI and control groups.",
+    "Evidence showing widespread increases in defect rates or vulnerability introduction without offsetting efficiency gains.",
+    "Data indicating negative productivity impacts across experienced engineering cohorts."
   ],
   "evaluation_criteria": [
-    "Hallucination rate: The proportion of generated claims that are factually unsupported by the provided context or ground truth.",
-    "Citation precision and recall: The accuracy with which retrieved passages are cited to support generated factual claims.",
-    "Baseline comparability: Ensuring non-retrieval baselines are evaluated on identical prompts, decoding parameters, and evaluation datasets."
+    "Developer productivity shall be assessed by task completion time, lines of code per hour, and self-reported efficiency metrics.",
+    "Code quality shall be assessed by bug density, code review cycle times, test coverage, and security vulnerability scan results."
   ],
   "source_policy": {
     "tiers": [
       {
         "tier": 1,
         "source_types": [
-          "peer-reviewed conference paper",
-          "peer-reviewed journal article",
-          "academic preprint from reputable repository"
+          "peer-reviewed primary research",
+          "conference papers",
+          "systematic literature reviews"
         ],
         "role": "evidence"
       },
       {
         "tier": 2,
         "source_types": [
-          "official technical report",
-          "benchmark documentation",
-          "systematic review"
+          "industry technical reports",
+          "official benchmark evaluations",
+          "empirical case studies"
         ],
         "role": "evidence"
       },
       {
         "tier": 3,
         "source_types": [
-          "industry research blog",
-          "technical documentation"
+          "technical blogs",
+          "developer surveys",
+          "expert commentary"
         ],
         "role": "discovery"
       }
     ],
     "evidence_eligible_source_types": [
-      "peer-reviewed conference paper",
-      "peer-reviewed journal article",
-      "academic preprint from reputable repository",
-      "official technical report",
-      "benchmark documentation",
-      "systematic review"
+      "peer-reviewed primary research",
+      "conference papers",
+      "systematic literature reviews",
+      "industry technical reports",
+      "official benchmark evaluations",
+      "empirical case studies"
     ],
     "discovery_only_source_types": [
-      "industry research blog",
-      "technical documentation"
+      "technical blogs",
+      "developer surveys",
+      "expert commentary"
     ]
   },
   "global_source_requirements": {
-    "minimum_counter_evidence_sources": 3,
-    "minimum_total_sources": 12,
+    "minimum_peer_reviewed_sources": 5,
+    "minimum_quantitative_sources": 8,
     "minimum_primary_sources": 8,
-    "minimum_peer_reviewed_sources": 6,
-    "minimum_quantitative_sources": 8
+    "minimum_total_sources": 12,
+    "minimum_counter_evidence_sources": 3
   },
   "source_diversity_requirements": [
     "research groups",
-    "benchmarks",
-    "base model architectures",
-    "retrieval algorithms"
+    "industry sectors",
+    "developer experience levels",
+    "programming languages",
+    "evaluation metrics"
   ],
   "questions": [
     {
       "id": "Q1",
-      "type": "definition",
+      "type": "quantitative",
       "priority": "high",
-      "question": "How are hallucinations in large language models defined and measured in the context of retrieval-augmented generation evaluations?",
+      "question": "What is the measured impact of generative AI coding assistants on software developer task completion time and productivity metrics?",
       "evidence_needed": [
-        "hallucination taxonomy",
-        "evaluation metrics",
-        "benchmark datasets"
+        "task completion time",
+        "benchmark",
+        "metric",
+        "experimental setup",
+        "sample size"
       ],
       "search_strategy": {
         "primary_queries": [
-          "hallucination definition measurement large language models",
-          "retrieval augmented generation hallucination metrics"
+          "generative ai software developer productivity empirical study",
+          "measuring github copilot productivity impact time"
         ],
         "secondary_queries": [
-          "factual consistency evaluation benchmarks LLM RAG",
-          "taxonomy of hallucinations in text generation"
+          "code generation tools task completion time metrics",
+          "ai coding assistant efficiency evaluation"
         ],
         "counter_evidence_queries": [
-          "limitations of hallucination evaluation metrics RAG",
-          "discrepancies in automated hallucination detection benchmarks"
+          "generative ai no productivity gain software engineering",
+          "developer slowdown ai code generation limitations"
         ]
       },
       "preferred_source_types": [
-        "peer-reviewed conference paper",
-        "systematic review"
+        "peer-reviewed primary research",
+        "conference papers",
+        "empirical case studies"
       ],
       "source_requirements": {
-        "minimum_sources": 3,
+        "minimum_primary_sources": 3,
+        "minimum_sources": 4,
         "minimum_counter_evidence_sources": 1,
-        "minimum_primary_sources": 2,
-        "minimum_quantitative_sources": 1
+        "minimum_quantitative_sources": 4
       },
       "requires_quantitative_evidence": true,
       "quantitative_fields": [
+        "task",
         "metric",
-        "dataset",
-        "task"
+        "baseline_score",
+        "experimental_score",
+        "relative_difference",
+        "sample_size"
       ],
       "experimental_context_fields": [
+        "model",
         "task",
-        "evaluation methodology"
+        "experimental setup",
+        "evaluation metric"
       ],
       "requires_counter_evidence": true,
       "boundary_conditions": [
-        "evaluation metric design",
-        "dataset domain specificity"
+        "developer experience level",
+        "task complexity",
+        "programming language"
       ],
       "depends_on": []
     },
     {
       "id": "Q2",
-      "type": "comparison",
+      "type": "performance",
       "priority": "high",
-      "question": "What empirical evidence demonstrates the impact of retrieval-augmented generation on hallucination rates compared with non-retrieval baselines?",
+      "question": "How does the integration of generative AI impact code quality, bug density, and security vulnerability introduction?",
       "evidence_needed": [
-        "model",
-        "dataset",
-        "benchmark",
-        "baseline",
-        "metric",
-        "hallucination rate",
-        "absolute difference",
-        "relative difference"
+        "bug density",
+        "vulnerability rate",
+        "code review metrics",
+        "test coverage"
       ],
       "search_strategy": {
         "primary_queries": [
-          "retrieval augmented generation reduces hallucinations empirical comparison",
-          "RAG vs non-retrieval baseline hallucination rate benchmark"
+          "generative ai code quality bug density security vulnerabilities",
+          "impact of ai code assistants on software reliability"
         ],
         "secondary_queries": [
-          "impact of context retrieval on factual accuracy in LLMs",
-          "comparative evaluation of RAG and parametric memory accuracy"
+          "code correctness generative ai LLM programming",
+          "security risks of AI generated code"
         ],
         "counter_evidence_queries": [
-          "studies showing no reduction in hallucinations from RAG",
-          "failures of retrieval augmented generation to reduce factual errors"
+          "ai generated code higher quality bug free",
+          "generative ai reduces security vulnerabilities study"
         ]
       },
       "preferred_source_types": [
-        "peer-reviewed conference paper",
-        "official technical report"
+        "peer-reviewed primary research",
+        "systematic literature reviews",
+        "industry technical reports"
       ],
       "source_requirements": {
-        "minimum_sources": 5,
-        "minimum_counter_evidence_sources": 2,
-        "minimum_primary_sources": 4,
-        "minimum_quantitative_sources": 4
+        "minimum_primary_sources": 3,
+        "minimum_sources": 4,
+        "minimum_counter_evidence_sources": 1,
+        "minimum_quantitative_sources": 3
       },
       "requires_quantitative_evidence": true,
       "quantitative_fields": [
-        "model",
-        "dataset",
-        "baseline",
         "metric",
         "baseline_score",
         "experimental_score",
-        "absolute_difference",
-        "relative_difference"
+        "absolute_difference"
       ],
       "experimental_context_fields": [
         "model",
-        "model size",
         "dataset",
-        "retriever",
-        "top-k",
+        "task",
         "evaluation metric"
       ],
       "requires_counter_evidence": true,
       "boundary_conditions": [
-        "model size",
-        "retrieval quality",
-        "knowledge domain"
+        "code review process",
+        "automated testing rigor",
+        "model capability"
       ],
       "depends_on": [
         "Q1"
@@ -197,57 +200,99 @@
       "id": "Q3",
       "type": "boundary_conditions",
       "priority": "medium",
-      "question": "Under what conditions or retrieval failures does retrieval-augmented generation fail to reduce or even exacerbate hallucinations?",
+      "question": "What moderation factors, such as developer tenure or domain complexity, alter the relationship between generative AI usage and software engineering outcomes?",
       "evidence_needed": [
-        "retrieval configuration",
-        "retrieval quality",
-        "noise injection",
-        "hallucination rate",
-        "ablation evidence"
+        "developer tenure",
+        "domain complexity",
+        "learning curve",
+        "subgroup analysis"
       ],
       "search_strategy": {
         "primary_queries": [
-          "retrieval failures increase hallucinations RAG",
-          "noisy context retrieval hallucination large language models"
+          "developer experience generative ai productivity moderators",
+          "junior vs senior developers generative ai coding performance"
         ],
         "secondary_queries": [
-          "ablation studies retrieval quality RAG hallucination",
-          "adversarial retrieval robustness LLM factual accuracy"
+          "task complexity generative ai software engineering limits",
+          "learning curve ai coding tools"
         ],
         "counter_evidence_queries": [
-          "robustness of LLMs to irrelevant retrieved context",
-          "conditions where RAG outperforms parametric memory despite noise"
+          "generative ai benefits all developers equally",
+          "experience does not moderate ai coding productivity"
         ]
       },
       "preferred_source_types": [
-        "peer-reviewed conference paper",
-        "academic preprint from reputable repository"
+        "peer-reviewed primary research",
+        "empirical case studies"
       ],
       "source_requirements": {
-        "minimum_sources": 4,
+        "minimum_primary_sources": 2,
+        "minimum_sources": 3,
         "minimum_counter_evidence_sources": 1,
-        "minimum_primary_sources": 3,
-        "minimum_quantitative_sources": 3
+        "minimum_quantitative_sources": 2
       },
       "requires_quantitative_evidence": true,
       "quantitative_fields": [
-        "model",
-        "dataset",
+        "sample_size",
         "metric",
-        "experimental_method",
-        "absolute_difference"
+        "relative_difference"
       ],
       "experimental_context_fields": [
-        "retriever",
-        "embedding model",
-        "top-k",
-        "experimental setup"
+        "population",
+        "sample size",
+        "task"
       ],
       "requires_counter_evidence": true,
       "boundary_conditions": [
-        "retriever precision",
-        "context length limits",
-        "contradictory retrieved documents"
+        "domain expertise",
+        "tool familiarity"
+      ],
+      "depends_on": [
+        "Q1"
+      ]
+    },
+    {
+      "id": "Q4",
+      "type": "limitations",
+      "priority": "medium",
+      "question": "What are the primary hidden costs, technical debt risks, and maintenance overhead associated with the adoption of generative AI in software development workflows?",
+      "evidence_needed": [
+        "maintenance overhead",
+        "technical debt",
+        "refactoring time",
+        "code churn"
+      ],
+      "search_strategy": {
+        "primary_queries": [
+          "technical debt generative ai code generation maintenance",
+          "hidden costs of ai coding assistants software maintenance"
+        ],
+        "secondary_queries": [
+          "code churn generative ai tools long term",
+          "refactoring burden AI generated code"
+        ],
+        "counter_evidence_queries": [
+          "generative ai reduces technical debt long term",
+          "ai code generation lowers maintenance overhead"
+        ]
+      },
+      "preferred_source_types": [
+        "industry technical reports",
+        "peer-reviewed primary research"
+      ],
+      "source_requirements": {
+        "minimum_primary_sources": 1,
+        "minimum_sources": 3,
+        "minimum_counter_evidence_sources": 1,
+        "minimum_quantitative_sources": 0
+      },
+      "requires_quantitative_evidence": false,
+      "quantitative_fields": [],
+      "experimental_context_fields": [],
+      "requires_counter_evidence": true,
+      "boundary_conditions": [
+        "project scale",
+        "codebase maturity"
       ],
       "depends_on": [
         "Q2"
@@ -255,28 +300,28 @@
     }
   ],
   "evidence_sufficiency": {
-    "high": "Multiple strong independent peer-reviewed studies report consistent quantitative reductions in hallucination rates across standardized benchmarks with controlled baselines.",
-    "medium": "Useful empirical evidence exists showing general hallucination reduction, but studies vary in benchmark selection, retriever configurations, or baseline tuning.",
-    "insufficient": "Available evidence lacks standardized metrics, controlled baselines, or quantitative measurements necessary to justify a conclusion.",
-    "low": "Evidence is sparse, relying primarily on unverified preprints or narrow domains without rigorous non-retrieval baseline comparisons.",
-    "conflicting": "Comparable empirical studies support materially different conclusions regarding whether RAG consistently reduces hallucinations or introduces retrieval-induced errors."
+    "medium": "Useful empirical evidence exists from industry reports or limited studies, but sample sizes, metrics, or independent replications are somewhat limited.",
+    "high": "Multiple strong independent peer-reviewed studies and empirical evaluations consistently demonstrate measurable productivity and quality outcomes with clear statistical significance.",
+    "conflicting": "Comparable empirical studies report contradictory outcomes regarding productivity gains versus code quality degradation.",
+    "low": "Evidence is primarily based on anecdotal developer feedback, limited non-peer-reviewed blogs, or highly restricted experimental tasks.",
+    "insufficient": "Available evidence lacks rigorous methodology, sufficient sample sizes, or adequate controls to justify any conclusion on productivity or quality impact."
   },
   "stopping_criteria": {
-    "require_major_claims_supported": true,
     "require_contradictions_investigated": true,
+    "require_major_claims_supported": true,
+    "require_minimum_primary_sources": true,
     "require_quantitative_evidence_when_applicable": true,
+    "require_minimum_total_sources": true,
     "require_counter_evidence_when_applicable": true,
     "require_all_high_priority_questions_covered": true,
-    "require_minimum_primary_sources": true,
-    "require_minimum_total_sources": true,
     "maximum_search_rounds": 3,
     "maximum_total_queries": 20
   },
   "claim_evidence_contract": {
     "required": true,
-    "distinguish_observation_interpretation_conclusion": true,
     "require_support_or_contradict_label": true,
-    "require_source_location": true
+    "require_source_location": true,
+    "distinguish_observation_interpretation_conclusion": true
   },
   "allowed_conclusion_statuses": [
     "supported",
@@ -286,13 +331,10 @@
     "insufficient_evidence"
   ],
   "phase_2_output_contract": {
-    "required_source_fields": [
-      "source_id",
-      "title",
-      "url",
-      "source_type",
-      "publication_date",
-      "evidence_eligible"
+    "required_final_fields": [
+      "unanswered_questions",
+      "stopping_criteria",
+      "overall_conclusion"
     ],
     "required_claim_fields": [
       "claim_id",
@@ -301,10 +343,13 @@
       "contradicting_source_ids",
       "confidence"
     ],
-    "required_final_fields": [
-      "unanswered_questions",
-      "stopping_criteria",
-      "overall_conclusion"
+    "required_source_fields": [
+      "source_id",
+      "title",
+      "url",
+      "source_type",
+      "publication_date",
+      "evidence_eligible"
     ],
     "required_question_fields": [
       "id",

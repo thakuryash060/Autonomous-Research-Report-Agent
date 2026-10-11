@@ -1,14 +1,12 @@
 {
   "schema_version": "1.1",
-  "topic": "Does retrieval-augmented generation (RAG) consistently reduce hallucinations in large language models compared with non-retrieval baselines?",
+  "topic": "The Impact of Generative AI on Software Developer Productivity and Code Quality",
   "research_plan_reference": "data/research_plan.json",
   "phase": "phase_2_researcher",
-  "summary": "Retrieval-Augmented Generation (RAG) is established as a prominent paradigm for addressing key shortcomings of large language models (LLMs), such as outdated knowledge and hallucinated facts, by dynamically integrating external corpora at inference time [OA-W7114889968, OA-W4394947112]. Current empirical evaluations across multiple domains demonstrate that RAG frameworks can substantially reduce hallucination rates compared to non-retrieval baselines. For example, specialized architectures like MEGA-RAG achieve hallucination reductions of over 40% alongside superior accuracy (0.7913), precision (0.7541), recall (0.8304), and F1 scores (0.7904) on the HealthQuestDB dataset when compared against standalone LLMs and standard RAG baselines [OA-W4414925442]. Similarly, the Fine-Grained Retrieval-Augmented Generation (FG-RAG) framework demonstrates a 15 percentage point reduction in hallucination rates over conventional RAG systems in visual question answering on the MSCOCO dataset [S2-9AEC70E89BC661DD, S2-9aec70e89bc661dd]. Advanced prompting integrations, such as combining RAG with graph-of-thoughts (GoT) mechanisms, further limit hallucinations by breaking down complex biomedical queries and grounding them in retrieved factual knowledge [OA-W4399305008].\n\nDespite these quantitative improvements, the literature reveals that RAG does not consistently or universally eliminate hallucinations due to persistent operational bottlenecks and failure modes. A primary vulnerability is retrieval noise—defined as irrelevant or low-quality information retrieved alongside valid context—which can degrade performance by causing models to rely on incorrect content rather than true facts [OA-W4413114507, S43]. Furthermore, systematic evaluations indicate that RAG system failure modes can affect up to 12.6% of samples even when models are provided with perfectly retrieved documents, driven by knowledge misinterpretation, improper utilization, or over-caution behaviors where the model refuses to answer ambiguous queries [OA-W4405030403]. \n\n**Contradiction Analysis**\nThe tension between studies demonstrating major hallucination reductions and those highlighting persistent errors or noise vulnerability stems from variations in baseline sophistication, task complexity, and structural retrieval design. Conventional or \"naïve\" RAG configurations remain highly susceptible to retrieval noise and granularity mismatches, often failing when high lexical similarity couples questions with irrelevant passages [S2-9AEC70E89BC661DD, S43]. Conversely, advanced modular architectures (such as MEGA-RAG, FG-RAG, and KRAGEN) incorporate specialized rerankers, multi-evidence guided answer refinement, and knowledge graphs to explicitly filter noise and align semantic resolution [S2-9AEC70E89BC661DD, OA-W4414925442, OA-W4399305008]. Thus, while standard RAG frequently struggles with contextual noise, highly engineered RAG frameworks demonstrate consistent reductions in hallucinations.\n\n**Unresolved Evidence Gaps & Empirical Uncertainties**\nBased on the current synthesis, the evidence base exhibits notable sufficiency gaps across research questions. Specifically, evaluations for Q2 and Q3 are currently classified as INSUFFICIENT due to a lack of the required number of independent quantitative sources and counter-evidence metrics. Additionally, while qualitative challenges like retrieval noise and architectural failure modes are acknowledged, the heterogeneity of designs, tasks (ranging from biomedical QA to code generation and vision tasks), and evaluation metrics (e.g., FactScore, RadGraph-F1, MED-F1, ROUGE) limits broad meta-analytic generalizability [OA-W7114889968, OA-W4413114507]. Consequently, claims regarding RAG's consistency in reducing hallucinations must be qualified by the specific engineering decisions, retrieval volumes, and task constraints implemented in each deployment.",
+  "summary": "### The Impact of Generative AI on Software Developer Productivity and Code Quality\n\nThe integration of Generative AI (GenAI) and Large Language Models (LLMs) into the Software Development Life Cycle (SDLC) has fundamentally transformed developer workflows, driving notable short-term gains in efficiency alongside systemic challenges in code quality and security [OA-W7163154377, S2-b73f8c89ba8509f1]. Empirical literature confirms a moderate to substantial positive effect on developer productivity [OA-W7160670964]. Controlled experiments and systematic reviews report average productivity increases ranging from 31.4% to over 50% across tasks such as code generation, debugging, testing, and documentation writing [OA-W4416578578, OA-W7163154377, S2-b73f8c89ba8509f1]. Furthermore, developer-centric field surveys demonstrate high subjective satisfaction (e.g., 86% satisfaction among BNY Mellon engineers using GitHub Copilot) [OA-W7168015462], with 82% of participants reporting less time spent writing code and broad stability in productivity perceptions over time [OA-W7162323204]. Meta-analyses quantify the overall standardized effect on productivity at $g = 0.33$, though effect sizes vary considerably depending on the operational context [OA-W7160670964].\n\nDespite these clear velocity advantages, GenAI code generation introduces severe quality, maintainability, and security bottlenecks. Studies indicate that 25% to 40% of AI-generated code contains correctness issues that demand manual developer intervention [OA-W7163154377]. Security vulnerabilities present an even greater risk: approximately 40% of security-critical AI-generated code contains exploitable vulnerabilities [OA-W7163154377], with broader model evaluations showing vulnerability rates spanning 12% to 62% across leading architectures [S2-B73F8C89BA8509F1]. Specific failure modes mapped against Common Weakness Enumerations (CWE) highlight persistent dangers in Improper Input Validation and Cross-Site Scripting [S2-B73F8C89BA8509F1], with AI tools increasing the introduction of security vulnerabilities by 23.7% [OA-W4416578578]. Moreover, programming language variations exacerbate these risks, as Python realizes high quality improvements while C++ faces steep security risk increases (up to 34.8%) [OA-W4416578578]. \n\nA critical empirical tension exists between short-term velocity gains and long-term technical debt. While controlled experiments frequently highlight rapid task completion times, open-source and enterprise investigations reveal that productivity gains can mask a growing maintenance burden [S58]. Increased technical debt accumulates as experienced developers spend substantial workloads reviewing, debugging, and rewriting code from less-experienced contributors or automated generation tools [S58, S2-25094a3673820557]. These divergences stem from several structural variables: controlled experimental settings typically isolate small-scale functions (optimizing completion time), whereas open-source and enterprise environments involve complex multi-developer repositories where architectural consistency, security hardening, and integration overhead degrade long-term throughput [OA-W7160670964]. Furthermore, naive token-cost or raw velocity metrics frequently fail to account for retry overhead, prompt engineering requirements, and human oversight bottlenecks [S2-b24b59568412eeca].\n\n---\n\n### Unresolved Evidence Gaps & Empirical Uncertainties\n\nPer the sufficiency evaluation, research questions Q3 and Q4 are currently classified as **INSUFFICIENT** due to a lack of independent counter-refutation sources required to fully balance trade-off and limitation parameters. Consequently, the conclusions drawn above must be qualified by several ongoing empirical uncertainties:\n* **Long-Term Longitudinal Impact:** Most existing studies capture short-term task-based metrics or controlled experimental sessions. Rigorous long-term longitudinal data tracking software maintainability, defect rates, and project sustainability over multi-year software lifecycles remains sparse [S58].\n* **Task and Repository Complexity:** While function-level synthesis (e.g., HumanEval benchmarks) is well-documented, repository-level and complex architectural software generation suffer from data contamination risks, evaluation protocol variations, and unquantified scaling limits [OA-W7153290859].\n* **Varied Enterprise Contexts:** Meta-analytic findings emphasize that productivity gains are significantly smaller in open-source and enterprise settings compared to controlled environments [OA-W7160670964]. Additional empirical research is needed to isolate how team maturity, proprietary codebase structures, and specific governance frameworks (such as Task-to-Model Optimization routing) alter net productivity and security outcomes [S2-b24b59568412eeca].",
   "evidence_gaps": [
-    "[Q2] Only 3 primary sources, but 4 required.",
-    "[Q2] Only 2 independent sources with quantitative evidence, but 4 required (total findings: 2).",
-    "[Q2] Only 0 independent sources with counter-evidence, but 2 required (total findings: 0).",
-    "[Q3] Only 2 independent sources with quantitative evidence, but 3 required (total findings: 2)."
+    "[Q3] Extracted 0 trade-offs and 1 limitations, but 0 direct counter refutations. 1 independent counter sources required.",
+    "[Q4] Extracted 2 trade-offs and 1 limitations, but 0 direct counter refutations. 1 independent counter sources required."
   ],
   "sufficiency_evaluation": [
     {
@@ -16,56 +14,67 @@
       "sufficient": true,
       "selected_source_count": 5,
       "useful_source_count": 7,
-      "idle_source_count": 1,
+      "idle_source_count": 2,
       "primary_source_count": 7,
-      "finding_count": 9,
-      "quantitative_count": 2,
+      "finding_count": 13,
+      "quantitative_count": 8,
       "counter_count": 1,
-      "limitation_count": 1,
+      "limitation_count": 3,
       "trade_off_count": 0,
       "missing_requirements": [],
       "evidence_gaps": []
     },
     {
       "question_id": "Q2",
-      "sufficient": false,
-      "selected_source_count": 6,
-      "useful_source_count": 3,
-      "idle_source_count": 3,
-      "primary_source_count": 3,
-      "finding_count": 3,
-      "quantitative_count": 2,
-      "counter_count": 0,
-      "limitation_count": 0,
-      "trade_off_count": 0,
-      "missing_requirements": [
-        "insufficient_primary_sources",
-        "quantitative_evidence",
-        "counter_evidence"
-      ],
-      "evidence_gaps": [
-        "Only 3 primary sources, but 4 required.",
-        "Only 2 independent sources with quantitative evidence, but 4 required (total findings: 2).",
-        "Only 0 independent sources with counter-evidence, but 2 required (total findings: 0)."
-      ]
+      "sufficient": true,
+      "selected_source_count": 5,
+      "useful_source_count": 8,
+      "idle_source_count": 0,
+      "primary_source_count": 8,
+      "finding_count": 12,
+      "quantitative_count": 7,
+      "counter_count": 3,
+      "limitation_count": 3,
+      "trade_off_count": 1,
+      "missing_requirements": [],
+      "evidence_gaps": []
     },
     {
       "question_id": "Q3",
       "sufficient": false,
       "selected_source_count": 5,
       "useful_source_count": 4,
-      "idle_source_count": 2,
-      "primary_source_count": 4,
-      "finding_count": 4,
+      "idle_source_count": 3,
+      "primary_source_count": 3,
+      "finding_count": 5,
       "quantitative_count": 2,
-      "counter_count": 1,
-      "limitation_count": 0,
+      "counter_count": 0,
+      "limitation_count": 1,
       "trade_off_count": 0,
       "missing_requirements": [
-        "quantitative_evidence"
+        "counter_evidence"
       ],
       "evidence_gaps": [
-        "Only 2 independent sources with quantitative evidence, but 3 required (total findings: 2)."
+        "Extracted 0 trade-offs and 1 limitations, but 0 direct counter refutations. 1 independent counter sources required."
+      ]
+    },
+    {
+      "question_id": "Q4",
+      "sufficient": false,
+      "selected_source_count": 5,
+      "useful_source_count": 5,
+      "idle_source_count": 1,
+      "primary_source_count": 5,
+      "finding_count": 5,
+      "quantitative_count": 0,
+      "counter_count": 0,
+      "limitation_count": 1,
+      "trade_off_count": 2,
+      "missing_requirements": [
+        "counter_evidence"
+      ],
+      "evidence_gaps": [
+        "Extracted 2 trade-offs and 1 limitations, but 0 direct counter refutations. 1 independent counter sources required."
       ]
     }
   ],
@@ -73,67 +82,77 @@
     {
       "question_id": "Q1",
       "support_claims": [
-        "Retrieval-Augmented Generation (RAG) integrates external knowledge retrieval to improve factual consistency and reduce hallucinations in large language models, with evaluations utilizing standard and clinical-specific metrics like FactScore, RadGraph-F1, and MED-F1.",
-        "The proposed Fine-Grained Retrieval-Augmented Generation (FG-RAG) framework reduces hallucination rates by 15 percentage points compared to conventional RAG systems in visual question answering on the MSCOCO dataset.",
-        "MEGA-RAG outperforms four baseline models (PubMedBERT, PubMedGPT, standalone LLM, and LLM with standard retrieval-augmented generation) by achieving a reduction in hallucination rates by over 40%, and obtaining the highest accuracy, precision, recall, and F1 score on the HealthQuestDB dataset."
+        "Participants reported spending less time on most development tasks, with 82% reporting less time spent on writing code.",
+        "Productivity perceptions held stable, with 84% reporting improvement at both time points",
+        "The use of AI-assistive coding tools led to a 31.4% increase in average developer productivity, measured through task completion time and cognitive load surveys."
       ],
       "counter_claims": [
-        "Retrieval-augmented generation experiences persistent challenges including retrieval noise, defined as irrelevant or low-quality retrieved information, which can impact performance."
+        "Does not measure developer task completion time or productivity metrics directly via empirical experiments."
       ],
       "dimensions": {
         "support_datasets": [
-          "BioASQ-13b",
-          "HealthQuestDB"
+          "Developer Survey"
         ],
         "counter_datasets": [],
         "support_models": [
-          "MEGA-RAG"
+          "GitHub Copilot",
+          "Leading Models"
         ],
         "counter_models": [],
         "support_tasks": [
-          "Public health question answering",
-          "biomedical summary question generation"
+          "Code Generation Security Evaluation",
+          "Software Development Tasks",
+          "overall developer productivity and experience"
         ],
         "counter_tasks": []
       },
-      "description": "Question Q1 exhibits empirical tension between 5 supporting finding(s) and 1 counter/mixed finding(s)."
+      "description": "Question Q1 exhibits empirical tension between 7 supporting finding(s) and 1 counter/mixed finding(s)."
     },
     {
-      "question_id": "Q3",
+      "question_id": "Q2",
       "support_claims": [
-        "MEGA-RAG outperforms four baseline models (PubMedBERT, PubMedGPT, standalone LLM, and LLM with standard retrieval-augmented generation) by achieving a reduction in hallucination rates by over 40%, and obtaining the highest accuracy, precision, recall, and F1 score on the HealthQuestDB dataset.",
-        "Errors in RAG models occur due to high lexical similarity between questions and noisy documents, causing models to rely on irrelevant content instead of correct information, alongside over-caution behaviors where models refuse to answer due to ambiguity.",
-        "RAG systems experience failure modes affecting up to 12.6% of samples even when provided with perfect retrieved documents, due to misinterpretation and improper knowledge utilization."
+        "AI-generated code exhibits a high vulnerability rate, with studies showing vulnerability rates ranging from 12% to 62% across various leading models.",
+        "AI-assisted code generation tools increase the introduction of security vulnerabilities by 23.7% in generated code.",
+        "Generative AI technology enhances Software Development Life Cycle (SDLC) security by supporting vulnerability detection, threat modeling, secure coding practices, and incident response"
       ],
       "counter_claims": [
-        "Retrieval-augmented generation experiences persistent challenges including retrieval noise, defined as irrelevant or low-quality retrieved information, which can impact performance."
+        "Introducing ethical risks, reliability issues with ai-created results, and challenges in integration.",
+        "Does not measure developer task completion time or productivity metrics directly via empirical experiments.",
+        "Forbidding ai during assessment yields a slight negative, non-significant effect."
       ],
       "dimensions": {
         "support_datasets": [
-          "HealthQuestDB"
+          "480 code modules among Python, Java, JavaScript, and C++ projects",
+          "C++ projects"
         ],
         "counter_datasets": [],
         "support_models": [
-          "MEGA-RAG"
+          "AI-assisted code generation tools",
+          "Leading Models"
         ],
         "counter_models": [],
         "support_tasks": [
-          "General RAG failure modes",
-          "Public health question answering"
+          "Code Generation Security Evaluation",
+          "Code generation and development",
+          "Security vulnerability introduction"
         ],
         "counter_tasks": []
       },
-      "description": "Question Q3 exhibits empirical tension between 3 supporting finding(s) and 1 counter/mixed finding(s)."
+      "description": "Question Q2 exhibits empirical tension between 3 supporting finding(s) and 3 counter/mixed finding(s)."
     }
   ],
   "evidence_diversity": {
-    "diversity_score": 0.88,
+    "diversity_score": 1.0,
     "unique_venues": [
-      "Applied Informatics",
-      "Big Data and Cognitive Computing",
-      "Frontiers in Artificial Intelligence",
-      "Scientific Reports",
-      "Semantic Scholar"
+      "International Journal For Multidisciplinary Research",
+      "International Journal for Research in Applied Science and Engineering Technology",
+      "International journal of computer information systems and industrial management applications",
+      "Journal of Artificial Intelligence and Engineering Applications (JAIEA)",
+      "Journal of Desk Research Review and Analysis",
+      "Nexus Science Review",
+      "SEIP@ICSE",
+      "Semantic Scholar",
+      "arXiv.org"
     ],
     "unique_publication_years": [
       2024,
@@ -141,16 +160,24 @@
       2026
     ],
     "unique_models": [
-      "MEGA-RAG"
+      "AI-assisted code generation tools",
+      "GitHub Copilot",
+      "Leading Models",
+      "Various Generative AI tools"
     ],
     "unique_benchmarks": [
-      "BioASQ-13b",
-      "HealthQuestDB"
+      "2025 Veracode security report",
+      "480 code modules among Python, Java, JavaScript, and C++ projects",
+      "89 security-critical scenarios",
+      "C++ projects",
+      "Developer Survey",
+      "Mobile application development code generation",
+      "Python projects"
     ]
   },
   "contract_enforcement": {
-    "compliance_score": 0.58,
-    "contract_status": "PARTIAL",
+    "compliance_score": 0.88,
+    "contract_status": "PASSED",
     "question_compliance": [
       {
         "question_id": "Q1",
@@ -159,58 +186,58 @@
         "clauses": [
           {
             "clause": "minimum_sources",
-            "target": 3,
-            "actual": 8,
+            "target": 4,
+            "actual": 10,
             "met": true
           },
           {
             "clause": "minimum_primary_sources",
-            "target": 2,
-            "actual": 7,
+            "target": 3,
+            "actual": 6,
             "met": true
           },
           {
             "clause": "minimum_quantitative_sources",
-            "target": 1,
-            "actual": 2,
+            "target": 4,
+            "actual": 7,
             "met": true
           },
           {
             "clause": "minimum_counter_evidence_sources",
             "target": 1,
-            "actual": 1,
+            "actual": 2,
             "met": true
           }
         ]
       },
       {
         "question_id": "Q2",
-        "score": 0.0,
-        "status": "UNMET",
+        "score": 1.0,
+        "status": "MET",
         "clauses": [
           {
             "clause": "minimum_sources",
-            "target": 5,
-            "actual": 3,
-            "met": false
+            "target": 4,
+            "actual": 12,
+            "met": true
           },
           {
             "clause": "minimum_primary_sources",
-            "target": 4,
-            "actual": 3,
-            "met": false
+            "target": 3,
+            "actual": 8,
+            "met": true
           },
           {
             "clause": "minimum_quantitative_sources",
-            "target": 4,
-            "actual": 2,
-            "met": false
+            "target": 3,
+            "actual": 6,
+            "met": true
           },
           {
             "clause": "minimum_counter_evidence_sources",
-            "target": 2,
-            "actual": 0,
-            "met": false
+            "target": 1,
+            "actual": 4,
+            "met": true
           }
         ]
       },
@@ -221,53 +248,84 @@
         "clauses": [
           {
             "clause": "minimum_sources",
-            "target": 4,
-            "actual": 4,
+            "target": 3,
+            "actual": 5,
             "met": true
           },
           {
             "clause": "minimum_primary_sources",
-            "target": 3,
-            "actual": 4,
+            "target": 2,
+            "actual": 2,
             "met": true
           },
           {
             "clause": "minimum_quantitative_sources",
-            "target": 3,
-            "actual": 2,
-            "met": false
+            "target": 2,
+            "actual": 3,
+            "met": true
           },
           {
             "clause": "minimum_counter_evidence_sources",
             "target": 1,
-            "actual": 1,
+            "actual": 0,
+            "met": false
+          }
+        ]
+      },
+      {
+        "question_id": "Q4",
+        "score": 0.75,
+        "status": "PARTIAL",
+        "clauses": [
+          {
+            "clause": "minimum_sources",
+            "target": 3,
+            "actual": 7,
             "met": true
+          },
+          {
+            "clause": "minimum_primary_sources",
+            "target": 1,
+            "actual": 5,
+            "met": true
+          },
+          {
+            "clause": "minimum_quantitative_sources",
+            "target": 0,
+            "actual": 0,
+            "met": true
+          },
+          {
+            "clause": "minimum_counter_evidence_sources",
+            "target": 1,
+            "actual": 0,
+            "met": false
           }
         ]
       }
     ],
-    "summary": "Contract compliance PARTIAL (Score: 58.0%). 7/12 requirements verified across 3 sub-questions."
+    "summary": "Contract compliance PASSED (Score: 88.0%). 14/16 requirements verified across 4 sub-questions."
   },
   "questions": [
     {
       "question_id": "Q1",
-      "question": "How are hallucinations in large language models defined and measured in the context of retrieval-augmented generation evaluations?",
+      "question": "What is the measured impact of generative AI coding assistants on software developer task completion time and productivity metrics?",
       "status": "complete_candidate",
       "findings": [
         {
           "question_id": "Q1",
           "source_ids": [
-            "OA-W7114889968"
+            "OA-W7162323204"
           ],
-          "claim": "Retrieval-Augmented Generation addresses key shortcomings of Large Language Models such as hallucinated facts and stale world knowledge by allowing a generative model to query an external corpus at inference time.",
-          "stance": "context",
+          "claim": "Participants reported spending less time on most development tasks, with 82% reporting less time spent on writing code.",
+          "stance": "support",
           "confidence": "high",
           "evidence": [
             {
-              "source_id": "OA-W7114889968",
-              "evidence_type": "qualitative",
-              "evidence_text": "Retrieval-Augmented Generation (RAG) addresses key shortcomings of these models, such as hallucinated facts, stale world knowledge, and the challenges posed by knowledge-intensive and domain-specific queries, by allowing a generative model to query an external corpus at inference time",
-              "location_in_source": "Section I"
+              "source_id": "OA-W7162323204",
+              "evidence_type": "quantitative",
+              "evidence_text": "Participants reported spending less time on most development tasks, with 82% reporting less on writing code.",
+              "location_in_source": "Abstract"
             }
           ],
           "quantitative_evidence": [],
@@ -277,44 +335,54 @@
         {
           "question_id": "Q1",
           "source_ids": [
-            "OA-W4413114507"
+            "OA-W7162323204"
           ],
-          "claim": "Retrieval-Augmented Generation (RAG) integrates external knowledge retrieval to improve factual consistency and reduce hallucinations in large language models, with evaluations utilizing standard and clinical-specific metrics like FactScore, RadGraph-F1, and MED-F1.",
+          "claim": "Productivity perceptions held stable, with 84% reporting improvement at both time points",
           "stance": "support",
           "confidence": "high",
           "evidence": [
             {
-              "source_id": "OA-W4413114507",
-              "evidence_type": "qualitative",
-              "evidence_text": "Retrieval-Augmented Generation (RAG) enhances large language models (LLMs) by integrating external knowledge retrieval to improve factual consistency and reduce hallucinations.",
-              "location_in_source": "Main Text"
-            },
-            {
-              "source_id": "OA-W4413114507",
-              "evidence_type": "methodological",
-              "evidence_text": "Evaluation strategies are compared using both standard metrics and clinical-specific metrics, FactScore, RadGraph-F1, and MED-F1, which are particularly critical for ensuring factual accuracy, medical validity, and clinical relevance.",
-              "location_in_source": "Main Text"
+              "source_id": "OA-W7162323204",
+              "evidence_type": "quantitative",
+              "evidence_text": "productivity perceptions held stable, with 84% reporting improvement at both time points, yet among matched participants, the proportion reporting worsened developer experience in at least one dimension nearly doubled from 14% to 27%",
+              "location_in_source": "Abstract"
             }
           ],
-          "quantitative_evidence": [],
+          "quantitative_evidence": [
+            {
+              "source_id": "OA-W7162323204",
+              "model": null,
+              "dataset": null,
+              "task": "overall developer productivity and experience",
+              "metric": "percentage reporting improvement or worsened experience",
+              "baseline_score": 14.0,
+              "experimental_score": 27.0,
+              "absolute_difference": 13.0,
+              "relative_difference": 92.86,
+              "multiplier": null,
+              "range_min": null,
+              "range_max": null,
+              "location_in_source": "Abstract"
+            }
+          ],
           "evl_status": "validated",
+          "atomic_type": "performance",
           "finding_id": "Q1-F2"
         },
         {
           "question_id": "Q1",
           "source_ids": [
-            "S2-9AEC70E89BC661DD",
-            "S2-9aec70e89bc661dd"
+            "OA-W4416578578"
           ],
-          "claim": "The proposed Fine-Grained Retrieval-Augmented Generation (FG-RAG) framework reduces hallucination rates by 15 percentage points compared to conventional RAG systems in visual question answering on the MSCOCO dataset.",
+          "claim": "The use of AI-assistive coding tools led to a 31.4% increase in average developer productivity, measured through task completion time and cognitive load surveys.",
           "stance": "support",
           "confidence": "high",
           "evidence": [
             {
-              "source_id": "S2-9AEC70E89BC661DD",
+              "source_id": "OA-W4416578578",
               "evidence_type": "quantitative",
-              "evidence_text": "In visual question answering, our framework achieves 0.4353 F1 score on MSCOCO and reduces hallucination rates by 15% points compared to conventional RAG systems.",
-              "location_in_source": "Main Text"
+              "evidence_text": "The use of AI-assistive tools lead to a 31.4% increase in average developer productivity; however, 23.7% more security vulnerabilities were introduced in the codes generated.",
+              "location_in_source": "Abstract"
             }
           ],
           "quantitative_evidence": [],
@@ -324,131 +392,54 @@
         {
           "question_id": "Q1",
           "source_ids": [
-            "OA-W4414925442"
+            "OA-W4416578578"
           ],
-          "claim": "MEGA-RAG outperforms four baseline models (PubMedBERT, PubMedGPT, standalone LLM, and LLM with standard retrieval-augmented generation) by achieving a reduction in hallucination rates by over 40%, and obtaining the highest accuracy, precision, recall, and F1 score on the HealthQuestDB dataset.",
-          "stance": "support",
+          "claim": "Productivity was evaluated in a controlled experiment involving 120 professional developers by measuring task completion time and conducting cognitive load surveys.",
+          "stance": "context",
           "confidence": "high",
           "evidence": [
             {
-              "source_id": "OA-W4414925442",
-              "evidence_type": "quantitative",
-              "evidence_text": "Experimental evaluation demonstrates that MEGA-RAG outperforms four baseline models [PubMedBERT, PubMedGPT, standalone LLM, and LLM with standard retrieval-augmented generation (RAG)], achieving a reduction in hallucination rates by over 40%. It also achieves the highest accuracy (0.7913), precision (0.7541), recall (0.8304), and F1 score (0.7904).",
+              "source_id": "OA-W4416578578",
+              "evidence_type": "methodological",
+              "evidence_text": "A controlled experiment was performed with 120 professional developers where they were divided into experimental and control groups and 480 code modules were analyzed among Python, Java, JavaScript, and C++ projects... productivity was gauged through measuring task completion time and conducting cognitive load surveys.",
               "location_in_source": "Abstract"
             }
           ],
-          "quantitative_evidence": [
-            {
-              "source_id": "OA-W4414925442",
-              "model": "MEGA-RAG",
-              "dataset": "HealthQuestDB",
-              "task": "Public health question answering",
-              "metric": "Accuracy",
-              "baseline_score": null,
-              "experimental_score": 0.7913,
-              "absolute_difference": null,
-              "relative_difference": null,
-              "multiplier": null,
-              "range_min": null,
-              "range_max": null,
-              "location_in_source": "Abstract"
-            },
-            {
-              "source_id": "OA-W4414925442",
-              "model": "MEGA-RAG",
-              "dataset": "HealthQuestDB",
-              "task": "Public health question answering",
-              "metric": "Precision",
-              "baseline_score": null,
-              "experimental_score": 0.7541,
-              "absolute_difference": null,
-              "relative_difference": null,
-              "multiplier": null,
-              "range_min": null,
-              "range_max": null,
-              "location_in_source": "Abstract"
-            },
-            {
-              "source_id": "OA-W4414925442",
-              "model": "MEGA-RAG",
-              "dataset": "HealthQuestDB",
-              "task": "Public health question answering",
-              "metric": "Recall",
-              "baseline_score": null,
-              "experimental_score": 0.8304,
-              "absolute_difference": null,
-              "relative_difference": null,
-              "multiplier": null,
-              "range_min": null,
-              "range_max": null,
-              "location_in_source": "Abstract"
-            },
-            {
-              "source_id": "OA-W4414925442",
-              "model": "MEGA-RAG",
-              "dataset": "HealthQuestDB",
-              "task": "Public health question answering",
-              "metric": "F1 score",
-              "baseline_score": null,
-              "experimental_score": 0.7904,
-              "absolute_difference": null,
-              "relative_difference": null,
-              "multiplier": null,
-              "range_min": null,
-              "range_max": null,
-              "location_in_source": "Abstract"
-            }
-          ],
+          "quantitative_evidence": [],
           "evl_status": "validated",
-          "finding_id": "Q1-F4",
-          "routed_from_question": "Q2"
+          "finding_id": "Q1-F4"
         },
         {
           "question_id": "Q1",
           "source_ids": [
-            "OA-W7214699577"
+            "OA-W7163154377"
           ],
-          "claim": "Prompt-level figure caption injection enriches downstream generation quality, driving ROUGE-1 and ROUGE-L improvements over the strong text-only baseline.",
-          "stance": "support",
+          "claim": "Generative AI code generation introduces correctness issues in 25-40% of generated code requiring manual correction.",
+          "stance": "limitation",
           "confidence": "high",
           "evidence": [
             {
-              "source_id": "OA-W7214699577",
+              "source_id": "OA-W7163154377",
               "evidence_type": "quantitative",
-              "evidence_text": "Specifically, the localized PMCID-level boosting module refines retrieval ordering to an MRR of 0.8358 ± 0.0018, while prompt-level figure caption injection substantially enriches downstream generation quality, driving ROUGE-1 from 0.4068 ± 0.0037 to 0.4137 ± 0.0036 and ROUGE-L from 0.2623 ± 0.0018 to 0.2678 ± 0.0016 over the strong text-only baseline.",
-              "location_in_source": "Abstract"
+              "evidence_text": "However, 25–40% of AI-generated code contains correctness issues and approximately 40% of security-critical AI code contains exploitable vulnerabilities.",
+              "location_in_source": "Section I"
             }
           ],
           "quantitative_evidence": [
             {
-              "source_id": "OA-W7214699577",
-              "model": null,
-              "dataset": "BioASQ-13b",
-              "task": "biomedical summary question generation",
-              "metric": "ROUGE-1",
-              "baseline_score": 0.4068,
-              "experimental_score": 0.4137,
-              "absolute_difference": 0.0069,
-              "relative_difference": 1.7,
+              "source_id": "OA-W7163154377",
+              "model": "Various Generative AI tools",
+              "dataset": "Mobile application development code generation",
+              "task": "Code generation and correctness",
+              "metric": "Correctness issues percentage",
+              "baseline_score": null,
+              "experimental_score": null,
+              "absolute_difference": null,
+              "relative_difference": null,
               "multiplier": null,
-              "range_min": null,
-              "range_max": null,
-              "location_in_source": "Abstract"
-            },
-            {
-              "source_id": "OA-W7214699577",
-              "model": null,
-              "dataset": "BioASQ-13b",
-              "task": "biomedical summary question generation",
-              "metric": "ROUGE-L",
-              "baseline_score": 0.2623,
-              "experimental_score": 0.2678,
-              "absolute_difference": 0.0055,
-              "relative_difference": 2.1,
-              "multiplier": null,
-              "range_min": null,
-              "range_max": null,
-              "location_in_source": "Abstract"
+              "range_min": 25.0,
+              "range_max": 40.0,
+              "location_in_source": "Section I"
             }
           ],
           "evl_status": "validated",
@@ -458,248 +449,354 @@
         {
           "question_id": "Q1",
           "source_ids": [
-            "OA-W4413114507"
+            "OA-W7163154377"
           ],
-          "claim": "Retrieval-augmented generation experiences persistent challenges including retrieval noise, defined as irrelevant or low-quality retrieved information, which can impact performance.",
-          "stance": "counter",
+          "claim": "Approximately 40% of security-critical AI-generated code contains exploitable vulnerabilities.",
+          "stance": "limitation",
           "confidence": "high",
           "evidence": [
             {
-              "source_id": "OA-W4413114507",
-              "evidence_type": "boundary_condition",
-              "evidence_text": "Persistent challenges are identified, including retrieval noise (irrelevant or low-quality retrieved information), domain shift (performance degradation when models are applied to data distributions different from their training set), generation latency, and limited explainability.",
-              "location_in_source": "Main Text"
+              "source_id": "OA-W7163154377",
+              "evidence_type": "quantitative",
+              "evidence_text": "Pearce et al. (2022) found exploitable security vulnerabilities in approximately 40% of Copilot-generated code across 89 security-critical scenarios",
+              "location_in_source": "Section I"
             }
           ],
-          "quantitative_evidence": [],
+          "quantitative_evidence": [
+            {
+              "source_id": "OA-W7163154377",
+              "model": "GitHub Copilot",
+              "dataset": "89 security-critical scenarios",
+              "task": "Security vulnerability introduction",
+              "metric": "Vulnerability rate percentage",
+              "baseline_score": null,
+              "experimental_score": 40.0,
+              "absolute_difference": null,
+              "relative_difference": null,
+              "multiplier": null,
+              "range_min": null,
+              "range_max": null,
+              "location_in_source": "Section I"
+            }
+          ],
           "evl_status": "validated",
           "finding_id": "Q1-F6",
-          "routed_from_question": "Q3"
+          "routed_from_question": "Q2"
         },
         {
           "question_id": "Q1",
           "source_ids": [
-            "OA-W4399305008"
+            "S2-B73F8C89BA8509F1",
+            "S2-b73f8c89ba8509f1"
           ],
-          "claim": "LLMs can produce fluent texts but often lack factual consistency and introduce false or irrelevant information not supported by evidence, leading to hallucinations.",
-          "stance": "context",
+          "claim": "AI-generated code exhibits a high vulnerability rate, with studies showing vulnerability rates ranging from 12% to 62% across various leading models.",
+          "stance": "support",
           "confidence": "high",
           "evidence": [
             {
-              "source_id": "OA-W4399305008",
-              "evidence_type": "qualitative",
-              "evidence_text": "While LLMs can produce fluent and coherent texts, without proper vetting, they may lack factual consistency and may introduce irrelevant or false information that is not supported by evidence",
+              "source_id": "S2-B73F8C89BA8509F1",
+              "evidence_type": "quantitative",
+              "evidence_text": "Evaluations utilizing static code analysis tools and formal verification methods reveal that the vulnerability rate of AI-generated code is exceptionally high, ranging from 12% to 62% across various leading models [4].",
+              "location_in_source": "Section 2.2"
+            }
+          ],
+          "quantitative_evidence": [
+            {
+              "source_id": "S2-B73F8C89BA8509F1",
+              "model": "Leading Models",
+              "dataset": null,
+              "task": "Code Generation Security Evaluation",
+              "metric": "Vulnerability Rate %",
+              "baseline_score": null,
+              "experimental_score": null,
+              "absolute_difference": null,
+              "relative_difference": null,
+              "multiplier": null,
+              "range_min": 12.0,
+              "range_max": 62.0,
+              "location_in_source": "Section 2.2"
+            }
+          ],
+          "evl_status": "validated",
+          "finding_id": "Q1-F7",
+          "routed_from_question": "Q2"
+        },
+        {
+          "question_id": "Q1",
+          "source_ids": [
+            "S2-B73F8C89BA8509F1",
+            "S2-b73f8c89ba8509f1"
+          ],
+          "claim": "AI-generated output code security failure metrics based on CWE show high failure percentages for specific weaknesses, including Improper Input Validation and Cross-Site Scripting.",
+          "stance": "limitation",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "S2-B73F8C89BA8509F1",
+              "evidence_type": "quantitative",
+              "evidence_text": "Specifically, the limitations of AI models in understanding data sanitization contexts are reflected in the high percentage of secure output failures, according to 2025 Veracode security report metrics extracted by [4].",
+              "location_in_source": "Section 4.3"
+            }
+          ],
+          "quantitative_evidence": [
+            {
+              "source_id": "S2-B73F8C89BA8509F1",
+              "model": null,
+              "dataset": "2025 Veracode security report",
+              "task": "Security Failure Analysis (CWE)",
+              "metric": "Insecure Output Failure Ratio %",
+              "baseline_score": null,
+              "experimental_score": 88.0,
+              "absolute_difference": null,
+              "relative_difference": null,
+              "multiplier": null,
+              "range_min": null,
+              "range_max": null,
+              "location_in_source": "Section 4.3"
+            }
+          ],
+          "evl_status": "validated",
+          "finding_id": "Q1-F8",
+          "routed_from_question": "Q2"
+        },
+        {
+          "question_id": "Q1",
+          "source_ids": [
+            "OA-W7168015462"
+          ],
+          "claim": "A survey of 2989 engineers at BNY Mellon regarding GitHub Copilot showed that 86% were either satisfied or very satisfied with the AI coding assistant.",
+          "stance": "support",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "OA-W7168015462",
+              "evidence_type": "quantitative",
+              "evidence_text": "we find that most engineers are satisfied with their experience: 86% are either satisfied or very satisfied (Figure 1 left).",
+              "location_in_source": "Section 4.1"
+            }
+          ],
+          "quantitative_evidence": [
+            {
+              "source_id": "OA-W7168015462",
+              "model": "GitHub Copilot",
+              "dataset": "Developer Survey",
+              "task": "Software Development Tasks",
+              "metric": "General Satisfaction Percentage",
+              "baseline_score": null,
+              "experimental_score": 86.0,
+              "absolute_difference": null,
+              "relative_difference": null,
+              "multiplier": null,
+              "range_min": null,
+              "range_max": null,
+              "location_in_source": "Section 4.1"
+            }
+          ],
+          "evl_status": "validated",
+          "finding_id": "Q1-F9"
+        },
+        {
+          "question_id": "Q1",
+          "source_ids": [
+            "OA-W7168015462"
+          ],
+          "claim": "A majority of engineers (around 60%) reported less than one hour of time savings per week when using GitHub Copilot.",
+          "stance": "support",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "OA-W7168015462",
+              "evidence_type": "quantitative",
+              "evidence_text": "we find that a majority of engineers (around 60%) report less than one hour of time savings (Figure 1 middle)",
+              "location_in_source": "Section 4.1"
+            }
+          ],
+          "quantitative_evidence": [
+            {
+              "source_id": "OA-W7168015462",
+              "model": "GitHub Copilot",
+              "dataset": "Developer Survey",
+              "task": "Software Development Tasks",
+              "metric": "Perceived Time Savings Percentage (<1 hour per week)",
+              "baseline_score": null,
+              "experimental_score": 60.0,
+              "absolute_difference": null,
+              "relative_difference": null,
+              "multiplier": null,
+              "range_min": null,
+              "range_max": null,
+              "location_in_source": "Section 4.1"
+            }
+          ],
+          "evl_status": "validated",
+          "finding_id": "Q1-F10"
+        },
+        {
+          "question_id": "Q1",
+          "source_ids": [
+            "S2-B24B59568412EECA",
+            "S2-b24b59568412eeca"
+          ],
+          "claim": "The text describes a framework (T2MO) for enterprise LLM coding assistants to optimize model selection and reduce costs",
+          "stance": "support",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "S2-B24B59568412EECA",
+              "evidence_type": "methodological",
+              "evidence_text": "We describe the methodology, optimization objective, evaluation protocol, and governance loop in a form suitable for production deployment and future empirical study.",
               "location_in_source": "Section 1"
             }
           ],
           "quantitative_evidence": [],
           "evl_status": "validated",
-          "finding_id": "Q1-F7"
+          "atomic_type": "performance",
+          "finding_id": "Q1-F11"
         },
         {
           "question_id": "Q1",
           "source_ids": [
-            "OA-W4399305008"
+            "S2-B24B59568412EECA",
+            "S2-b24b59568412eeca"
           ],
-          "claim": "Combining RAG with graph-of-thoughts (GoT) prompting limits hallucinations in biomedical problem-solving by breaking down complex queries and retrieving relevant factual knowledge.",
-          "stance": "support",
+          "claim": "Does not measure developer task completion time or productivity metrics directly via empirical experiments.",
+          "stance": "counter",
           "confidence": "high",
           "evidence": [
             {
-              "source_id": "OA-W4399305008",
-              "evidence_type": "qualitative",
-              "evidence_text": "KRAGEN uses advanced prompting techniques: namely graph-of-thoughts (GoT), to dynamically break down a complex problem into smaller subproblems, and proceeds to solve each subproblem by using the relevant knowledge through the RAG framework, which limits the hallucinations",
-              "location_in_source": "Abstract"
+              "source_id": "S2-B24B59568412EECA",
+              "evidence_type": "methodological",
+              "evidence_text": "We describe the methodology, optimization objective, evaluation protocol, and governance loop in a form suitable for production deployment and future empirical study.",
+              "location_in_source": "Section 1"
             }
           ],
           "quantitative_evidence": [],
           "evl_status": "validated",
-          "finding_id": "Q1-F8"
+          "atomic_type": "overhead_or_limitation",
+          "finding_id": "Q1-F12"
         },
         {
           "question_id": "Q1",
           "source_ids": [
-            "OA-W4394947112"
+            "S2-5DCE72BBCE8B73B0",
+            "S2-5dce72bbce8b73b0"
           ],
-          "claim": "Large language models are susceptible to generating convincing yet inaccurate responses, known as hallucinations, which can mislead users due to their reliance on extensive training datasets that restrict their ability to incorporate new information post-training.",
-          "stance": "limitation",
+          "claim": "The interview study involved 18 software developers and engineers with an average of eight years of industry experience to investigate software supply chain security approaches and challenges.",
+          "stance": "context",
           "confidence": "high",
           "evidence": [
             {
-              "source_id": "OA-W4394947112",
-              "evidence_type": "qualitative",
-              "evidence_text": "Third, LLMs are susceptible to generating convincing yet inaccurate responses, known as “hallucinations”, which can mislead users.",
-              "location_in_source": "Section 1. Introduction"
-            },
-            {
-              "source_id": "OA-W4394947112",
-              "evidence_type": "qualitative",
-              "evidence_text": "The hallucinations are largely attributed to LLMs’ inability to access up-to-date information. This limitation stems from the models’ reliance on their training datasets.",
-              "location_in_source": "Section 2. RAG Framework"
+              "source_id": "S2-5DCE72BBCE8B73B0",
+              "evidence_type": "quantitative",
+              "evidence_text": "We conducted 18 semi-structured interviews with experienced developers actively working in industry... Their industry experience ranges from three to over ten years, with an average of eight years.",
+              "location_in_source": "Abstract and Section 4.1"
             }
           ],
-          "quantitative_evidence": [],
+          "quantitative_evidence": [
+            {
+              "source_id": "S2-5DCE72BBCE8B73B0",
+              "model": null,
+              "dataset": null,
+              "task": "Semi-structured interviews on software supply chain security",
+              "metric": "sample_size",
+              "baseline_score": null,
+              "experimental_score": 18.0,
+              "absolute_difference": null,
+              "relative_difference": null,
+              "multiplier": null,
+              "range_min": 3.0,
+              "range_max": 10.0,
+              "location_in_source": "Section 3 and Section 4.1"
+            }
+          ],
           "evl_status": "validated",
-          "finding_id": "Q1-F9"
+          "finding_id": "Q1-F13",
+          "routed_from_question": "Q3"
         }
       ],
       "counter_evidence": [
         {
           "question_id": "Q1",
           "source_ids": [
-            "OA-W4413114507"
+            "S2-B24B59568412EECA",
+            "S2-b24b59568412eeca"
           ],
-          "claim": "Retrieval-augmented generation experiences persistent challenges including retrieval noise, defined as irrelevant or low-quality retrieved information, which can impact performance.",
+          "claim": "Does not measure developer task completion time or productivity metrics directly via empirical experiments.",
           "stance": "counter",
           "confidence": "high",
           "evidence": [
             {
-              "source_id": "OA-W4413114507",
-              "evidence_type": "boundary_condition",
-              "evidence_text": "Persistent challenges are identified, including retrieval noise (irrelevant or low-quality retrieved information), domain shift (performance degradation when models are applied to data distributions different from their training set), generation latency, and limited explainability.",
-              "location_in_source": "Main Text"
+              "source_id": "S2-B24B59568412EECA",
+              "evidence_type": "methodological",
+              "evidence_text": "We describe the methodology, optimization objective, evaluation protocol, and governance loop in a form suitable for production deployment and future empirical study.",
+              "location_in_source": "Section 1"
             }
           ],
           "quantitative_evidence": [],
           "evl_status": "validated",
-          "finding_id": "Q1-F6",
-          "routed_from_question": "Q3"
+          "atomic_type": "overhead_or_limitation",
+          "finding_id": "Q1-F12"
         }
       ],
       "evidence_gaps": []
     },
     {
       "question_id": "Q2",
-      "question": "What empirical evidence demonstrates the impact of retrieval-augmented generation on hallucination rates compared with non-retrieval baselines?",
-      "status": "partial",
+      "question": "How does the integration of generative AI impact code quality, bug density, and security vulnerability introduction?",
+      "status": "complete_candidate",
       "findings": [
         {
           "question_id": "Q2",
           "source_ids": [
-            "OA-W4414925442"
+            "S2-2E5C5550120A554D",
+            "S2-2e5c5550120a554d"
           ],
-          "claim": "MEGA-RAG outperforms four baseline models (PubMedBERT, PubMedGPT, standalone LLM, and LLM with standard retrieval-augmented generation) by achieving a reduction in hallucination rates by over 40%, and obtaining the highest accuracy, precision, recall, and F1 score on the HealthQuestDB dataset.",
-          "stance": "support",
+          "claim": "While ChatGPT excels in generating and debugging code, it struggles with complex tasks and security vulnerabilities, emphasizing the need for continuous human oversight.",
+          "stance": "trade_off",
           "confidence": "high",
           "evidence": [
             {
-              "source_id": "OA-W4414925442",
-              "evidence_type": "quantitative",
-              "evidence_text": "Experimental evaluation demonstrates that MEGA-RAG outperforms four baseline models [PubMedBERT, PubMedGPT, standalone LLM, and LLM with standard retrieval-augmented generation (RAG)], achieving a reduction in hallucination rates by over 40%. It also achieves the highest accuracy (0.7913), precision (0.7541), recall (0.8304), and F1 score (0.7904).",
-              "location_in_source": "Abstract"
+              "source_id": "S2-2E5C5550120A554D",
+              "evidence_type": "qualitative",
+              "evidence_text": "ChatGPT, in particular, excels in generating and debugging code but struggles with more complex tasks and security vulnerabilities. The study emphasises the need for continuous human oversight to ensure security and correctness...",
+              "location_in_source": "Main Text"
             }
           ],
-          "quantitative_evidence": [
-            {
-              "source_id": "OA-W4414925442",
-              "model": "MEGA-RAG",
-              "dataset": "HealthQuestDB",
-              "task": "Public health question answering",
-              "metric": "Accuracy",
-              "baseline_score": null,
-              "experimental_score": 0.7913,
-              "absolute_difference": null,
-              "relative_difference": null,
-              "multiplier": null,
-              "range_min": null,
-              "range_max": null,
-              "location_in_source": "Abstract"
-            },
-            {
-              "source_id": "OA-W4414925442",
-              "model": "MEGA-RAG",
-              "dataset": "HealthQuestDB",
-              "task": "Public health question answering",
-              "metric": "Precision",
-              "baseline_score": null,
-              "experimental_score": 0.7541,
-              "absolute_difference": null,
-              "relative_difference": null,
-              "multiplier": null,
-              "range_min": null,
-              "range_max": null,
-              "location_in_source": "Abstract"
-            },
-            {
-              "source_id": "OA-W4414925442",
-              "model": "MEGA-RAG",
-              "dataset": "HealthQuestDB",
-              "task": "Public health question answering",
-              "metric": "Recall",
-              "baseline_score": null,
-              "experimental_score": 0.8304,
-              "absolute_difference": null,
-              "relative_difference": null,
-              "multiplier": null,
-              "range_min": null,
-              "range_max": null,
-              "location_in_source": "Abstract"
-            },
-            {
-              "source_id": "OA-W4414925442",
-              "model": "MEGA-RAG",
-              "dataset": "HealthQuestDB",
-              "task": "Public health question answering",
-              "metric": "F1 score",
-              "baseline_score": null,
-              "experimental_score": 0.7904,
-              "absolute_difference": null,
-              "relative_difference": null,
-              "multiplier": null,
-              "range_min": null,
-              "range_max": null,
-              "location_in_source": "Abstract"
-            }
-          ],
+          "quantitative_evidence": [],
           "evl_status": "validated",
           "finding_id": "Q2-F1"
         },
         {
           "question_id": "Q2",
           "source_ids": [
-            "OA-W7214699577"
+            "OA-W7163154377"
           ],
-          "claim": "Prompt-level figure caption injection enriches downstream generation quality, driving ROUGE-1 and ROUGE-L improvements over the strong text-only baseline.",
-          "stance": "support",
+          "claim": "Generative AI code generation introduces correctness issues in 25-40% of generated code requiring manual correction.",
+          "stance": "limitation",
           "confidence": "high",
           "evidence": [
             {
-              "source_id": "OA-W7214699577",
+              "source_id": "OA-W7163154377",
               "evidence_type": "quantitative",
-              "evidence_text": "Specifically, the localized PMCID-level boosting module refines retrieval ordering to an MRR of 0.8358 ± 0.0018, while prompt-level figure caption injection substantially enriches downstream generation quality, driving ROUGE-1 from 0.4068 ± 0.0037 to 0.4137 ± 0.0036 and ROUGE-L from 0.2623 ± 0.0018 to 0.2678 ± 0.0016 over the strong text-only baseline.",
-              "location_in_source": "Abstract"
+              "evidence_text": "However, 25–40% of AI-generated code contains correctness issues and approximately 40% of security-critical AI code contains exploitable vulnerabilities.",
+              "location_in_source": "Section I"
             }
           ],
           "quantitative_evidence": [
             {
-              "source_id": "OA-W7214699577",
-              "model": null,
-              "dataset": "BioASQ-13b",
-              "task": "biomedical summary question generation",
-              "metric": "ROUGE-1",
-              "baseline_score": 0.4068,
-              "experimental_score": 0.4137,
-              "absolute_difference": 0.0069,
-              "relative_difference": 1.7,
+              "source_id": "OA-W7163154377",
+              "model": "Various Generative AI tools",
+              "dataset": "Mobile application development code generation",
+              "task": "Code generation and correctness",
+              "metric": "Correctness issues percentage",
+              "baseline_score": null,
+              "experimental_score": null,
+              "absolute_difference": null,
+              "relative_difference": null,
               "multiplier": null,
-              "range_min": null,
-              "range_max": null,
-              "location_in_source": "Abstract"
-            },
-            {
-              "source_id": "OA-W7214699577",
-              "model": null,
-              "dataset": "BioASQ-13b",
-              "task": "biomedical summary question generation",
-              "metric": "ROUGE-L",
-              "baseline_score": 0.2623,
-              "experimental_score": 0.2678,
-              "absolute_difference": 0.0055,
-              "relative_difference": 2.1,
-              "multiplier": null,
-              "range_min": null,
-              "range_max": null,
-              "location_in_source": "Abstract"
+              "range_min": 25.0,
+              "range_max": 40.0,
+              "location_in_source": "Section I"
             }
           ],
           "evl_status": "validated",
@@ -708,48 +805,421 @@
         {
           "question_id": "Q2",
           "source_ids": [
-            "OA-W4413114507"
+            "OA-W7163154377"
           ],
-          "claim": "The MiPACQ rule-based system demonstrates an 84% improvement in Precision at One, and the MiPACQ machine-learning-based system demonstrates a 134% improvement compared with a baseline information retrieval system.",
+          "claim": "Approximately 40% of security-critical AI-generated code contains exploitable vulnerabilities.",
+          "stance": "limitation",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "OA-W7163154377",
+              "evidence_type": "quantitative",
+              "evidence_text": "Pearce et al. (2022) found exploitable security vulnerabilities in approximately 40% of Copilot-generated code across 89 security-critical scenarios",
+              "location_in_source": "Section I"
+            }
+          ],
+          "quantitative_evidence": [
+            {
+              "source_id": "OA-W7163154377",
+              "model": "GitHub Copilot",
+              "dataset": "89 security-critical scenarios",
+              "task": "Security vulnerability introduction",
+              "metric": "Vulnerability rate percentage",
+              "baseline_score": null,
+              "experimental_score": 40.0,
+              "absolute_difference": null,
+              "relative_difference": null,
+              "multiplier": null,
+              "range_min": null,
+              "range_max": null,
+              "location_in_source": "Section I"
+            }
+          ],
+          "evl_status": "validated",
+          "finding_id": "Q2-F3"
+        },
+        {
+          "question_id": "Q2",
+          "source_ids": [
+            "S2-B73F8C89BA8509F1",
+            "S2-b73f8c89ba8509f1"
+          ],
+          "claim": "AI-generated code exhibits a high vulnerability rate, with studies showing vulnerability rates ranging from 12% to 62% across various leading models.",
           "stance": "support",
           "confidence": "high",
           "evidence": [
             {
-              "source_id": "OA-W4413114507",
+              "source_id": "S2-B73F8C89BA8509F1",
               "evidence_type": "quantitative",
-              "evidence_text": "Compared with our baseline information retrieval system, the MiPACQ rule-based system demonstrates 84% improvement in Precision at One and the MiPACQ machine-learning-based system demonstrates 134% improvement.",
-              "location_in_source": "Related papers"
+              "evidence_text": "Evaluations utilizing static code analysis tools and formal verification methods reveal that the vulnerability rate of AI-generated code is exceptionally high, ranging from 12% to 62% across various leading models [4].",
+              "location_in_source": "Section 2.2"
+            }
+          ],
+          "quantitative_evidence": [
+            {
+              "source_id": "S2-B73F8C89BA8509F1",
+              "model": "Leading Models",
+              "dataset": null,
+              "task": "Code Generation Security Evaluation",
+              "metric": "Vulnerability Rate %",
+              "baseline_score": null,
+              "experimental_score": null,
+              "absolute_difference": null,
+              "relative_difference": null,
+              "multiplier": null,
+              "range_min": 12.0,
+              "range_max": 62.0,
+              "location_in_source": "Section 2.2"
+            }
+          ],
+          "evl_status": "validated",
+          "finding_id": "Q2-F4"
+        },
+        {
+          "question_id": "Q2",
+          "source_ids": [
+            "S2-B73F8C89BA8509F1",
+            "S2-b73f8c89ba8509f1"
+          ],
+          "claim": "AI-generated output code security failure metrics based on CWE show high failure percentages for specific weaknesses, including Improper Input Validation and Cross-Site Scripting.",
+          "stance": "limitation",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "S2-B73F8C89BA8509F1",
+              "evidence_type": "quantitative",
+              "evidence_text": "Specifically, the limitations of AI models in understanding data sanitization contexts are reflected in the high percentage of secure output failures, according to 2025 Veracode security report metrics extracted by [4].",
+              "location_in_source": "Section 4.3"
+            }
+          ],
+          "quantitative_evidence": [
+            {
+              "source_id": "S2-B73F8C89BA8509F1",
+              "model": null,
+              "dataset": "2025 Veracode security report",
+              "task": "Security Failure Analysis (CWE)",
+              "metric": "Insecure Output Failure Ratio %",
+              "baseline_score": null,
+              "experimental_score": 88.0,
+              "absolute_difference": null,
+              "relative_difference": null,
+              "multiplier": null,
+              "range_min": null,
+              "range_max": null,
+              "location_in_source": "Section 4.3"
+            }
+          ],
+          "evl_status": "validated",
+          "finding_id": "Q2-F5"
+        },
+        {
+          "question_id": "Q2",
+          "source_ids": [
+            "OA-W4416578578"
+          ],
+          "claim": "AI-assisted code generation tools increase the introduction of security vulnerabilities by 23.7% in generated code.",
+          "stance": "support",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "OA-W4416578578",
+              "evidence_type": "quantitative",
+              "evidence_text": "Results: The use of AI-assistive tools lead to a 31.4% increase in average developer productivity; however, 23.7% more security vulnerabilities were introduced in the codes generated.",
+              "location_in_source": "Abstract"
+            },
+            {
+              "source_id": "OA-W4416578578",
+              "evidence_type": "quantitative",
+              "evidence_text": "The variations in programming languages were significant, with Python being the one that realized the highest quality improvement (26.3%) and C++ the one that faced the most security risk increase (34.8%).",
+              "location_in_source": "Abstract"
+            }
+          ],
+          "quantitative_evidence": [
+            {
+              "source_id": "OA-W4416578578",
+              "model": "AI-assisted code generation tools",
+              "dataset": "480 code modules among Python, Java, JavaScript, and C++ projects",
+              "task": "Code generation and development",
+              "metric": "security vulnerabilities introduced percentage",
+              "baseline_score": null,
+              "experimental_score": 23.7,
+              "absolute_difference": 23.7,
+              "relative_difference": null,
+              "multiplier": null,
+              "range_min": null,
+              "range_max": null,
+              "location_in_source": "Abstract"
+            },
+            {
+              "source_id": "OA-W4416578578",
+              "model": "AI-assisted code generation tools",
+              "dataset": "C++ projects",
+              "task": "Security vulnerability introduction",
+              "metric": "Security risk increase percentage",
+              "baseline_score": null,
+              "experimental_score": 34.8,
+              "absolute_difference": 34.8,
+              "relative_difference": null,
+              "multiplier": null,
+              "range_min": null,
+              "range_max": null,
+              "location_in_source": "Abstract"
+            }
+          ],
+          "evl_status": "validated",
+          "finding_id": "Q2-F6"
+        },
+        {
+          "question_id": "Q2",
+          "source_ids": [
+            "OA-W4416578578"
+          ],
+          "claim": "Programming language variations significantly affect AI code generation outcomes, with Python realizing the highest quality improvement (26.3%) and C++ facing the highest security risk increase (34.8%).",
+          "stance": "context",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "OA-W4416578578",
+              "evidence_type": "quantitative",
+              "evidence_text": "The variations in programming languages were significant, with Python being the one that realized the highest quality improvement (26.3%) and C++ the one that faced the most security risk increase (34.8%).",
+              "location_in_source": "Abstract"
+            }
+          ],
+          "quantitative_evidence": [
+            {
+              "source_id": "OA-W4416578578",
+              "model": "AI-assisted code generation tools",
+              "dataset": "Python projects",
+              "task": "Code generation quality improvement",
+              "metric": "Quality improvement percentage",
+              "baseline_score": null,
+              "experimental_score": 26.3,
+              "absolute_difference": 26.3,
+              "relative_difference": null,
+              "multiplier": null,
+              "range_min": null,
+              "range_max": null,
+              "location_in_source": "Abstract"
+            }
+          ],
+          "evl_status": "validated",
+          "finding_id": "Q2-F7"
+        },
+        {
+          "question_id": "Q2",
+          "source_ids": [
+            "S8"
+          ],
+          "claim": "Generative AI technology enhances Software Development Life Cycle (SDLC) security by supporting vulnerability detection, threat modeling, secure coding practices, and incident response",
+          "stance": "support",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "S8",
+              "evidence_type": "qualitative",
+              "evidence_text": "Our research shows that GenAI technology enhances SDLC security by supporting development through vulnerability detection, threat modeling, secure coding practices, and incident response. However, our review shows that AI adoption introduces ethical risks alongside reliability issues with AI-created results and challenges to integrate it into standard development methods.",
+              "location_in_source": "Abstract"
             }
           ],
           "quantitative_evidence": [],
           "evl_status": "validated",
-          "finding_id": "Q2-F3"
-        }
-      ],
-      "counter_evidence": [],
-      "evidence_gaps": [
-        "Counter evidence required by Planner, but no actual counter stance findings extracted."
-      ]
-    },
-    {
-      "question_id": "Q3",
-      "question": "Under what conditions or retrieval failures does retrieval-augmented generation fail to reduce or even exacerbate hallucinations?",
-      "status": "complete_candidate",
-      "findings": [
+          "atomic_type": "performance",
+          "finding_id": "Q2-F8"
+        },
         {
-          "question_id": "Q3",
+          "question_id": "Q2",
           "source_ids": [
-            "OA-W4413114507"
+            "S8"
           ],
-          "claim": "Retrieval-augmented generation experiences persistent challenges including retrieval noise, defined as irrelevant or low-quality retrieved information, which can impact performance.",
+          "claim": "Introducing ethical risks, reliability issues with ai-created results, and challenges in integration.",
           "stance": "counter",
           "confidence": "high",
           "evidence": [
             {
-              "source_id": "OA-W4413114507",
-              "evidence_type": "boundary_condition",
-              "evidence_text": "Persistent challenges are identified, including retrieval noise (irrelevant or low-quality retrieved information), domain shift (performance degradation when models are applied to data distributions different from their training set), generation latency, and limited explainability.",
-              "location_in_source": "Main Text"
+              "source_id": "S8",
+              "evidence_type": "qualitative",
+              "evidence_text": "Our research shows that GenAI technology enhances SDLC security by supporting development through vulnerability detection, threat modeling, secure coding practices, and incident response. However, our review shows that AI adoption introduces ethical risks alongside reliability issues with AI-created results and challenges to integrate it into standard development methods.",
+              "location_in_source": "Abstract"
+            }
+          ],
+          "quantitative_evidence": [],
+          "evl_status": "validated",
+          "atomic_type": "overhead_or_limitation",
+          "finding_id": "Q2-F9"
+        },
+        {
+          "question_id": "Q2",
+          "source_ids": [
+            "S2-B24B59568412EECA",
+            "S2-b24b59568412eeca"
+          ],
+          "claim": "Does not measure developer task completion time or productivity metrics directly via empirical experiments.",
+          "stance": "counter",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "S2-B24B59568412EECA",
+              "evidence_type": "methodological",
+              "evidence_text": "We describe the methodology, optimization objective, evaluation protocol, and governance loop in a form suitable for production deployment and future empirical study.",
+              "location_in_source": "Section 1"
+            }
+          ],
+          "quantitative_evidence": [],
+          "evl_status": "validated",
+          "atomic_type": "overhead_or_limitation",
+          "finding_id": "Q2-F10",
+          "routed_from_question": "Q1"
+        },
+        {
+          "question_id": "Q2",
+          "source_ids": [
+            "OA-W7160670964"
+          ],
+          "claim": "Forbidding ai during assessment yields a slight negative, non-significant effect.",
+          "stance": "counter",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "OA-W7160670964",
+              "evidence_type": "quantitative",
+              "evidence_text": "The most influential moderator was the exam environment, meaning whether GenAI assistance was permitted during assessment. The overall test of moderation was significant (QM(1) = 7.23, p = 0.007)... When participants were not allowed to use AI for the assessment, the effect was non-significant and even pointed slightly in a negative direction (g = -0.06, 95% CI: [-0.36, 0.24], p = 0.674). In contrast, when AI tools were permitted during the assessment, the estimated effect was large and statistically significant (g = 0.76, 95% CI: [0.24, 1.28], p = 0.004).",
+              "location_in_source": "Results"
+            }
+          ],
+          "quantitative_evidence": [],
+          "evl_status": "validated",
+          "atomic_type": "overhead_or_limitation",
+          "finding_id": "Q2-F11",
+          "routed_from_question": "Q3"
+        },
+        {
+          "question_id": "Q2",
+          "source_ids": [
+            "S2-5DCE72BBCE8B73B0",
+            "S2-5dce72bbce8b73b0"
+          ],
+          "claim": "The interview study involved 18 software developers and engineers with an average of eight years of industry experience to investigate software supply chain security approaches and challenges.",
+          "stance": "context",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "S2-5DCE72BBCE8B73B0",
+              "evidence_type": "quantitative",
+              "evidence_text": "We conducted 18 semi-structured interviews with experienced developers actively working in industry... Their industry experience ranges from three to over ten years, with an average of eight years.",
+              "location_in_source": "Abstract and Section 4.1"
+            }
+          ],
+          "quantitative_evidence": [
+            {
+              "source_id": "S2-5DCE72BBCE8B73B0",
+              "model": null,
+              "dataset": null,
+              "task": "Semi-structured interviews on software supply chain security",
+              "metric": "sample_size",
+              "baseline_score": null,
+              "experimental_score": 18.0,
+              "absolute_difference": null,
+              "relative_difference": null,
+              "multiplier": null,
+              "range_min": 3.0,
+              "range_max": 10.0,
+              "location_in_source": "Section 3 and Section 4.1"
+            }
+          ],
+          "evl_status": "validated",
+          "finding_id": "Q2-F12",
+          "routed_from_question": "Q3"
+        }
+      ],
+      "counter_evidence": [
+        {
+          "question_id": "Q2",
+          "source_ids": [
+            "S8"
+          ],
+          "claim": "Introducing ethical risks, reliability issues with ai-created results, and challenges in integration.",
+          "stance": "counter",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "S8",
+              "evidence_type": "qualitative",
+              "evidence_text": "Our research shows that GenAI technology enhances SDLC security by supporting development through vulnerability detection, threat modeling, secure coding practices, and incident response. However, our review shows that AI adoption introduces ethical risks alongside reliability issues with AI-created results and challenges to integrate it into standard development methods.",
+              "location_in_source": "Abstract"
+            }
+          ],
+          "quantitative_evidence": [],
+          "evl_status": "validated",
+          "atomic_type": "overhead_or_limitation",
+          "finding_id": "Q2-F9"
+        },
+        {
+          "question_id": "Q2",
+          "source_ids": [
+            "S2-B24B59568412EECA",
+            "S2-b24b59568412eeca"
+          ],
+          "claim": "Does not measure developer task completion time or productivity metrics directly via empirical experiments.",
+          "stance": "counter",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "S2-B24B59568412EECA",
+              "evidence_type": "methodological",
+              "evidence_text": "We describe the methodology, optimization objective, evaluation protocol, and governance loop in a form suitable for production deployment and future empirical study.",
+              "location_in_source": "Section 1"
+            }
+          ],
+          "quantitative_evidence": [],
+          "evl_status": "validated",
+          "atomic_type": "overhead_or_limitation",
+          "finding_id": "Q2-F10",
+          "routed_from_question": "Q1"
+        },
+        {
+          "question_id": "Q2",
+          "source_ids": [
+            "OA-W7160670964"
+          ],
+          "claim": "Forbidding ai during assessment yields a slight negative, non-significant effect.",
+          "stance": "counter",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "OA-W7160670964",
+              "evidence_type": "quantitative",
+              "evidence_text": "The most influential moderator was the exam environment, meaning whether GenAI assistance was permitted during assessment. The overall test of moderation was significant (QM(1) = 7.23, p = 0.007)... When participants were not allowed to use AI for the assessment, the effect was non-significant and even pointed slightly in a negative direction (g = -0.06, 95% CI: [-0.36, 0.24], p = 0.674). In contrast, when AI tools were permitted during the assessment, the estimated effect was large and statistically significant (g = 0.76, 95% CI: [0.24, 1.28], p = 0.004).",
+              "location_in_source": "Results"
+            }
+          ],
+          "quantitative_evidence": [],
+          "evl_status": "validated",
+          "atomic_type": "overhead_or_limitation",
+          "finding_id": "Q2-F11",
+          "routed_from_question": "Q3"
+        }
+      ],
+      "evidence_gaps": []
+    },
+    {
+      "question_id": "Q3",
+      "question": "What moderation factors, such as developer tenure or domain complexity, alter the relationship between generative AI usage and software engineering outcomes?",
+      "status": "partial",
+      "findings": [
+        {
+          "question_id": "Q3",
+          "source_ids": [
+            "OA-W4415027142"
+          ],
+          "claim": "The study analyzed software development productivity metrics across 100 participants, identifying variations in lines of code (LOC) per day and tasks completed per week that reflect differences in project complexity and tool usage.",
+          "stance": "context",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "OA-W4415027142",
+              "evidence_type": "quantitative",
+              "evidence_text": "Table 1 provides descriptive statistics for the 100 participants, highlighting daily coding time, tools used, lines of code written (LOC), and weekly task completion. On average, participants coded for 5.9 hours daily using approximately 3.6 tools, generated approximately 245 LOC per day, and completed 17.4 tasks per week.",
+              "location_in_source": "Table 1"
             }
           ],
           "quantitative_evidence": [],
@@ -759,99 +1229,53 @@
         {
           "question_id": "Q3",
           "source_ids": [
-            "OA-W4414925442"
+            "S19"
           ],
-          "claim": "MEGA-RAG outperforms four baseline models (PubMedBERT, PubMedGPT, standalone LLM, and LLM with standard retrieval-augmented generation) by achieving a reduction in hallucination rates by over 40%, and obtaining the highest accuracy, precision, recall, and F1 score on the HealthQuestDB dataset.",
-          "stance": "support",
+          "claim": "Generative AI usage in software engineering spans a wide range of developer roles, with Gartner projecting that through 2027 generative AI will require 80 percent of the engineering workforce to upskill.",
+          "stance": "context",
           "confidence": "high",
           "evidence": [
             {
-              "source_id": "OA-W4414925442",
+              "source_id": "S19",
               "evidence_type": "quantitative",
-              "evidence_text": "Experimental evaluation demonstrates that MEGA-RAG outperforms four baseline models [PubMedBERT, PubMedGPT, standalone LLM, and LLM with standard retrieval-augmented generation (RAG)], achieving a reduction in hallucination rates by over 40%. It also achieves the highest accuracy (0.7913), precision (0.7541), recall (0.8304), and F1 score (0.7904).",
-              "location_in_source": "Abstract"
+              "evidence_text": "Gartner has projected that through 2027, generative AI will create new roles in software engineering and operations, requiring 80 percent of the engineering workforce to upskill.",
+              "location_in_source": "Skills Needed as a Software Developer in the Age of AI"
             }
           ],
           "quantitative_evidence": [
             {
-              "source_id": "OA-W4414925442",
-              "model": "MEGA-RAG",
-              "dataset": "HealthQuestDB",
-              "task": "Public health question answering",
-              "metric": "Accuracy",
+              "source_id": "S19",
+              "model": null,
+              "dataset": null,
+              "task": "Engineering workforce upskilling",
+              "metric": "Percentage requiring upskilling",
               "baseline_score": null,
-              "experimental_score": 0.7913,
+              "experimental_score": 80.0,
               "absolute_difference": null,
               "relative_difference": null,
               "multiplier": null,
               "range_min": null,
               "range_max": null,
-              "location_in_source": "Abstract"
-            },
-            {
-              "source_id": "OA-W4414925442",
-              "model": "MEGA-RAG",
-              "dataset": "HealthQuestDB",
-              "task": "Public health question answering",
-              "metric": "Precision",
-              "baseline_score": null,
-              "experimental_score": 0.7541,
-              "absolute_difference": null,
-              "relative_difference": null,
-              "multiplier": null,
-              "range_min": null,
-              "range_max": null,
-              "location_in_source": "Abstract"
-            },
-            {
-              "source_id": "OA-W4414925442",
-              "model": "MEGA-RAG",
-              "dataset": "HealthQuestDB",
-              "task": "Public health question answering",
-              "metric": "Recall",
-              "baseline_score": null,
-              "experimental_score": 0.8304,
-              "absolute_difference": null,
-              "relative_difference": null,
-              "multiplier": null,
-              "range_min": null,
-              "range_max": null,
-              "location_in_source": "Abstract"
-            },
-            {
-              "source_id": "OA-W4414925442",
-              "model": "MEGA-RAG",
-              "dataset": "HealthQuestDB",
-              "task": "Public health question answering",
-              "metric": "F1 score",
-              "baseline_score": null,
-              "experimental_score": 0.7904,
-              "absolute_difference": null,
-              "relative_difference": null,
-              "multiplier": null,
-              "range_min": null,
-              "range_max": null,
-              "location_in_source": "Abstract"
+              "location_in_source": "Skills Needed as a Software Developer in the Age of AI"
             }
           ],
           "evl_status": "validated",
-          "finding_id": "Q3-F2",
-          "routed_from_question": "Q2"
+          "finding_id": "Q3-F2"
         },
         {
           "question_id": "Q3",
           "source_ids": [
-            "S43"
+            "OA-W7160670964"
           ],
-          "claim": "Errors in RAG models occur due to high lexical similarity between questions and noisy documents, causing models to rely on irrelevant content instead of correct information, alongside over-caution behaviors where models refuse to answer due to ambiguity.",
-          "stance": "support",
+          "claim": "Participant level, GenAI interface, programming language, randomization, and experimental design do not significantly moderate developer productivity effects.",
+          "stance": "limitation",
           "confidence": "high",
           "evidence": [
             {
-              "source_id": "S43",
-              "evidence_type": "qualitative",
-              "evidence_text": "Furthermore, our manual analysis reveals that many errors made by LLMs are attributed to over-caution behavior. LLMs often decline to respond probably due to training mechanisms designed to reduce hallucinations. Additionally, other errors occur when there is a high lexical similarity between the question and the words of noisy documents, which causes the model to rely on irrelevant content instead of the correct information.",
-              "location_in_source": "Abstract"
+              "source_id": "OA-W7160670964",
+              "evidence_type": "quantitative",
+              "evidence_text": "None of the remaining moderators reached statistical significance at common significance thresholds, which is the case for the GenAI interface (QM(1) = 0.21, p = 0.644), programming language (QM(1) = 0.43, p = 0.514), and the participant level (QM(2) = 3.97, p = 0.138). Also, in terms of study design, neither randomization (QM(1) = 1.63, p = 0.202), nor experimental design was a significant moderator (QM(2) = 1.35, p = 0.510)",
+              "location_in_source": "Results"
             }
           ],
           "quantitative_evidence": [],
@@ -861,886 +1285,1589 @@
         {
           "question_id": "Q3",
           "source_ids": [
-            "OA-W4405030403"
+            "OA-W7160670964"
           ],
-          "claim": "RAG systems experience failure modes affecting up to 12.6% of samples even when provided with perfect retrieved documents, due to misinterpretation and improper knowledge utilization.",
+          "claim": "The exam environment significantly moderates learning outcomes, where access to GenAI during assessment leads to a large positive effect",
           "stance": "support",
           "confidence": "high",
           "evidence": [
             {
-              "source_id": "OA-W4405030403",
+              "source_id": "OA-W7160670964",
               "evidence_type": "quantitative",
-              "evidence_text": "Most critically, we discover that RAG systems fail on cases solvable by base LLMs, affecting 12.6% of samples even with perfect documents due to misinterpretation and improper knowledge utilization.",
-              "location_in_source": "Section 1.2"
-            }
-          ],
-          "quantitative_evidence": [
-            {
-              "source_id": "OA-W4405030403",
-              "model": null,
-              "dataset": null,
-              "task": "General RAG failure modes",
-              "metric": "Failure Rate %",
-              "baseline_score": null,
-              "experimental_score": 12.6,
-              "absolute_difference": null,
-              "relative_difference": null,
-              "multiplier": null,
-              "range_min": null,
-              "range_max": null,
-              "location_in_source": "Section 1.2"
-            }
-          ],
-          "evl_status": "validated",
-          "finding_id": "Q3-F4"
-        }
-      ],
-      "counter_evidence": [
-        {
-          "question_id": "Q3",
-          "source_ids": [
-            "OA-W4413114507"
-          ],
-          "claim": "Retrieval-augmented generation experiences persistent challenges including retrieval noise, defined as irrelevant or low-quality retrieved information, which can impact performance.",
-          "stance": "counter",
-          "confidence": "high",
-          "evidence": [
-            {
-              "source_id": "OA-W4413114507",
-              "evidence_type": "boundary_condition",
-              "evidence_text": "Persistent challenges are identified, including retrieval noise (irrelevant or low-quality retrieved information), domain shift (performance degradation when models are applied to data distributions different from their training set), generation latency, and limited explainability.",
-              "location_in_source": "Main Text"
+              "evidence_text": "The most influential moderator was the exam environment, meaning whether GenAI assistance was permitted during assessment. The overall test of moderation was significant (QM(1) = 7.23, p = 0.007)... When participants were not allowed to use AI for the assessment, the effect was non-significant and even pointed slightly in a negative direction (g = -0.06, 95% CI: [-0.36, 0.24], p = 0.674). In contrast, when AI tools were permitted during the assessment, the estimated effect was large and statistically significant (g = 0.76, 95% CI: [0.24, 1.28], p = 0.004).",
+              "location_in_source": "Results"
             }
           ],
           "quantitative_evidence": [],
           "evl_status": "validated",
-          "finding_id": "Q3-F1"
+          "atomic_type": "performance",
+          "finding_id": "Q3-F4"
+        },
+        {
+          "question_id": "Q3",
+          "source_ids": [
+            "S2-5DCE72BBCE8B73B0",
+            "S2-5dce72bbce8b73b0"
+          ],
+          "claim": "The interview study involved 18 software developers and engineers with an average of eight years of industry experience to investigate software supply chain security approaches and challenges.",
+          "stance": "context",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "S2-5DCE72BBCE8B73B0",
+              "evidence_type": "quantitative",
+              "evidence_text": "We conducted 18 semi-structured interviews with experienced developers actively working in industry... Their industry experience ranges from three to over ten years, with an average of eight years.",
+              "location_in_source": "Abstract and Section 4.1"
+            }
+          ],
+          "quantitative_evidence": [
+            {
+              "source_id": "S2-5DCE72BBCE8B73B0",
+              "model": null,
+              "dataset": null,
+              "task": "Semi-structured interviews on software supply chain security",
+              "metric": "sample_size",
+              "baseline_score": null,
+              "experimental_score": 18.0,
+              "absolute_difference": null,
+              "relative_difference": null,
+              "multiplier": null,
+              "range_min": 3.0,
+              "range_max": 10.0,
+              "location_in_source": "Section 3 and Section 4.1"
+            }
+          ],
+          "evl_status": "validated",
+          "finding_id": "Q3-F5"
         }
       ],
-      "evidence_gaps": []
+      "counter_evidence": [],
+      "evidence_gaps": [
+        "Counter evidence required by Planner, but no actual counter stance findings extracted."
+      ]
+    },
+    {
+      "question_id": "Q4",
+      "question": "What are the primary hidden costs, technical debt risks, and maintenance overhead associated with the adoption of generative AI in software development workflows?",
+      "status": "partial",
+      "findings": [
+        {
+          "question_id": "Q4",
+          "source_ids": [
+            "S58"
+          ],
+          "claim": "Adopting AI-assisted programming tools like GitHub Copilot introduces technical debt and maintenance overhead, as code written post-adoption requires more rework to satisfy repository standards, placing an increased review and rework burden on experienced core developers.",
+          "stance": "trade_off",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "S58",
+              "evidence_type": "qualitative",
+              "evidence_text": "We also find that code written after the adoption of AI requires more rework to satisfy repository standards, indicating a potential increase in technical debt. Importantly, the added rework burden falls on the more experienced (core) developers, who review 6.5% more code after Copilot's introduction, but show a 19% drop in their original code productivity.",
+              "location_in_source": "Abstract"
+            }
+          ],
+          "quantitative_evidence": [],
+          "evl_status": "validated",
+          "finding_id": "Q4-F1"
+        },
+        {
+          "question_id": "Q4",
+          "source_ids": [
+            "S2-25094A3673820557",
+            "S2-25094a3673820557"
+          ],
+          "claim": "Vibe coding creates a flow-debt trade-off where rapid code generation leads to the accumulation of technical debt through architectural inconsistencies, security vulnerabilities, and increased maintenance overhead.",
+          "stance": "trade_off",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "S2-25094A3673820557",
+              "evidence_type": "qualitative",
+              "evidence_text": "The flow–debt trade-off arises when the seamless code generation occurs, leading to the accumulation of technical debt through architectural inconsistencies, security vulnerabilities, and increased maintenance overhead.",
+              "location_in_source": "Abstract"
+            }
+          ],
+          "quantitative_evidence": [],
+          "evl_status": "validated",
+          "finding_id": "Q4-F2"
+        },
+        {
+          "question_id": "Q4",
+          "source_ids": [
+            "OA-W7165898600"
+          ],
+          "claim": "LLM-generated code introduces hidden technical debt and maintenance overhead through systematic cryptographic failures such as API hallucinations and nonce reuse, which require manual enforcement and domain-specific analysis tools rather than general-purpose static analyzers.",
+          "stance": "support",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "OA-W7165898600",
+              "evidence_type": "qualitative",
+              "evidence_text": "All three models exhibit systematic failures, including nonce reuse and API hallucinations.",
+              "location_in_source": "Abstract"
+            },
+            {
+              "source_id": "OA-W7165898600",
+              "evidence_type": "qualitative",
+              "evidence_text": "the type system checks key and nonce sizes at compile time, however, nonce uniqueness across calls is invisible to the compiler and must be enforced manually.",
+              "location_in_source": "Section 1"
+            }
+          ],
+          "quantitative_evidence": [],
+          "evl_status": "validated",
+          "finding_id": "Q4-F3"
+        },
+        {
+          "question_id": "Q4",
+          "source_ids": [
+            "S2-B24B59568412EECA",
+            "S2-b24b59568412eeca"
+          ],
+          "claim": "The text describes a framework (T2MO) for enterprise LLM coding assistants to optimize model selection and reduce costs",
+          "stance": "support",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "S2-B24B59568412EECA",
+              "evidence_type": "methodological",
+              "evidence_text": "We describe the methodology, optimization objective, evaluation protocol, and governance loop in a form suitable for production deployment and future empirical study.",
+              "location_in_source": "Section 1"
+            }
+          ],
+          "quantitative_evidence": [],
+          "evl_status": "validated",
+          "atomic_type": "performance",
+          "finding_id": "Q4-F4",
+          "routed_from_question": "Q1"
+        },
+        {
+          "question_id": "Q4",
+          "source_ids": [
+            "OA-W7153290859"
+          ],
+          "claim": "The long-term effects of generative AI on codebase maintainability, technical debt, and maintenance overhead have not been adequately measured across realistic timescales.",
+          "stance": "limitation",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "OA-W7153290859",
+              "evidence_type": "qualitative",
+              "evidence_text": "Whether this represents net positive or negative development remains contested, complicated by the fact that long-term effects on codebase maintainability have not been adequately measured across realistic timescales.",
+              "location_in_source": "Section 1"
+            }
+          ],
+          "quantitative_evidence": [],
+          "evl_status": "validated",
+          "finding_id": "Q4-F5"
+        }
+      ],
+      "counter_evidence": [],
+      "evidence_gaps": [
+        "Counter evidence required by Planner, but no actual counter stance findings extracted."
+      ]
     }
   ],
   "sources": [
     {
-      "source_id": "OA-W7114889968",
-      "title": "A Systematic Literature Review of Retrieval-Augmented Generation: Techniques, Metrics, and Challenges",
-      "url": "https://doi.org/10.3390/bdcc9120320",
+      "source_id": "S2-2e5c5550120a554d",
+      "title": "Systematic Literature Review on Analyzing the Impact of Prompt Engineering on Efficiency, Code Quality, and Security in Crud Application Development",
+      "url": "https://www.semanticscholar.org/paper/2e5c5550120a554d6781314df957b0d469c86c13",
       "source_type": "peer_reviewed_paper",
       "content_status": "full",
       "is_useful": true,
       "findings_yielded": 1,
       "selected_for_questions": [
-        "Q1",
         "Q2"
       ],
       "selection_reason": {
-        "Q1": "top_ranked",
         "Q2": "top_ranked"
       },
-      "ranking_score": 1.275,
+      "ranking_score": 1.095,
       "ranking_by_question": {
         "Q1": {
-          "relevance_score": 1.0,
-          "relevance_reason": "hallucination_definition_match",
+          "relevance_score": 0.348,
+          "relevance_reason": "abstract_match",
           "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
+          "planner_preference_score": 0.5,
           "tavily_score": 0.85,
           "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.08,
+          "quantitative_bonus": 0.0,
           "counter_bonus": 0.08,
-          "final_score": 1.275
+          "final_score": 0.381
         },
         "Q2": {
           "relevance_score": 1.0,
-          "relevance_reason": "direct_comparison_match",
+          "relevance_reason": "abstract_match",
           "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
+          "planner_preference_score": 0.5,
           "tavily_score": 0.85,
           "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.08,
+          "quantitative_bonus": 0.0,
           "counter_bonus": 0.08,
-          "final_score": 1.275
+          "final_score": 1.095
         },
         "Q3": {
-          "relevance_score": 0.8383,
-          "relevance_reason": "strong_title_match",
+          "relevance_score": 0.3267,
+          "relevance_reason": "abstract_match",
           "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
+          "planner_preference_score": 0.5,
           "tavily_score": 0.85,
           "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.08,
+          "quantitative_bonus": 0.0,
           "counter_bonus": 0.08,
-          "final_score": 1.0688
+          "final_score": 0.3577
+        },
+        "Q4": {
+          "relevance_score": 0.5627,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.08,
+          "final_score": 0.6161
         }
       },
       "authors": [
-        "Andrew Brown",
-        "Muhammad Roman",
-        "Barry Devereux"
+        "K. Shanuka",
+        "J. Wijayanayake",
+        "K. Vidanage"
       ],
-      "publication_year": 2025,
-      "doi": "https://doi.org/10.3390/bdcc9120320",
-      "venue": "Big Data and Cognitive Computing",
-      "citation_count": 70,
+      "publication_year": 2024,
+      "doi": "https://doi.org/10.4038/jdrra.v2i1.57",
+      "venue": "Journal of Desk Research Review and Analysis",
+      "citation_count": 9,
       "is_open_access": true,
-      "open_access_url": "https://www.mdpi.com/2504-2289/9/12/320/pdf",
+      "open_access_url": "https://doi.org/10.4038/jdrra.v2i1.57",
+      "provider_name": "semanticscholar"
+    },
+    {
+      "source_id": "OA-W7163154377",
+      "title": "Generative AI in Mobile Application Development: A Systematic Literature Review",
+      "url": "https://doi.org/10.22214/ijraset.2026.83359",
+      "source_type": "peer_reviewed_paper",
+      "content_status": "full",
+      "is_useful": true,
+      "findings_yielded": 4,
+      "selected_for_questions": [
+        "Q2"
+      ],
+      "selection_reason": {
+        "Q2": "top_ranked"
+      },
+      "ranking_score": 1.065,
+      "ranking_by_question": {
+        "Q1": {
+          "relevance_score": 0.3744,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.0,
+          "final_score": 0.41
+        },
+        "Q2": {
+          "relevance_score": 0.9726,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.0,
+          "final_score": 1.065
+        },
+        "Q3": {
+          "relevance_score": 0.4267,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.0,
+          "final_score": 0.4672
+        },
+        "Q4": {
+          "relevance_score": 0.3831,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.0,
+          "final_score": 0.3888
+        }
+      },
+      "authors": [
+        "Balram Kumar",
+        "Prof. Sangeeta Rani"
+      ],
+      "publication_year": 2026,
+      "doi": "https://doi.org/10.22214/ijraset.2026.83359",
+      "venue": "International Journal for Research in Applied Science and Engineering Technology",
+      "citation_count": 0,
+      "is_open_access": true,
+      "open_access_url": "https://doi.org/10.22214/ijraset.2026.83359",
       "provider_name": "openalex"
     },
     {
-      "source_id": "OA-W4413114507",
-      "title": "Retrieval-Augmented Generation (RAG) in Healthcare: A Comprehensive Review",
-      "url": "https://doi.org/10.20944/preprints202508.1022.v1",
+      "source_id": "S2-b73f8c89ba8509f1",
+      "title": "The Role of Generative AI in the Software Development Life Cycle: A Systematic Literature Review",
+      "url": "https://www.semanticscholar.org/paper/b73f8c89ba8509f1a524743c490cac06535914e3",
+      "source_type": "peer_reviewed_paper",
+      "content_status": "full",
+      "is_useful": true,
+      "findings_yielded": 4,
+      "selected_for_questions": [
+        "Q2",
+        "Q3"
+      ],
+      "selection_reason": {
+        "Q2": "quantitative_evidence",
+        "Q3": "top_ranked"
+      },
+      "ranking_score": 1.0244,
+      "ranking_by_question": {
+        "Q1": {
+          "relevance_score": 0.4601,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.0,
+          "final_score": 0.5038
+        },
+        "Q2": {
+          "relevance_score": 0.9355,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.0,
+          "final_score": 1.0244
+        },
+        "Q3": {
+          "relevance_score": 0.4933,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.0,
+          "final_score": 0.5402
+        },
+        "Q4": {
+          "relevance_score": 0.7592,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.0,
+          "final_score": 0.7705
+        }
+      },
+      "authors": [
+        "Sebastian Saut Marulitua Sinaga",
+        "Zulfahmi Indra",
+        "Muhammad Rafli Wijaya",
+        "M. Almahdi"
+      ],
+      "publication_year": 2026,
+      "doi": "https://doi.org/10.59934/jaiea.v5i3.2431",
+      "venue": "Journal of Artificial Intelligence and Engineering Applications (JAIEA)",
+      "citation_count": 0,
+      "is_open_access": true,
+      "open_access_url": "https://ioinformatic.org/index.php/JAIEA/article/download/2431/1667",
+      "provider_name": "semanticscholar"
+    },
+    {
+      "source_id": "OA-W7208726607",
+      "title": "Generative AI and Technical Debt in Software Development: Productivity Gains versus Code Quality and Security Risk",
+      "url": "https://doi.org/10.70917/ijcisim-2026-5434",
+      "source_type": "peer_reviewed_paper",
+      "content_status": "full",
+      "is_useful": false,
+      "findings_yielded": 0,
+      "selected_for_questions": [
+        "Q4"
+      ],
+      "selection_reason": {
+        "Q4": "top_ranked"
+      },
+      "ranking_score": 1.015,
+      "ranking_by_question": {
+        "Q1": {
+          "relevance_score": 0.6538,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.0,
+          "final_score": 0.7159
+        },
+        "Q2": {
+          "relevance_score": 0.7672,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.0,
+          "final_score": 0.8401
+        },
+        "Q3": {
+          "relevance_score": 0.4733,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.0,
+          "final_score": 0.5183
+        },
+        "Q4": {
+          "relevance_score": 1.0,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.0,
+          "final_score": 1.015
+        }
+      },
+      "authors": [
+        "Rishu Roy",
+        "Vishal Khasgiwala",
+        "Vanita Joshi"
+      ],
+      "publication_year": 2026,
+      "doi": "https://doi.org/10.70917/ijcisim-2026-5434",
+      "venue": "International journal of computer information systems and industrial management applications",
+      "citation_count": 0,
+      "is_open_access": true,
+      "open_access_url": "https://cspub-ijcisim.org/index.php/ijcisim/article/download/5434/4496",
+      "provider_name": "openalex"
+    },
+    {
+      "source_id": "OA-W4416578578",
+      "title": "Empirical Analysis of AI-Assisted Code Generation Tools Impact on Code Quality, Security and Developer Productivity",
+      "url": "https://doi.org/10.36948/ijfmr.2025.v07i06.61350",
       "source_type": "peer_reviewed_paper",
       "content_status": "full",
       "is_useful": true,
       "findings_yielded": 4,
       "selected_for_questions": [
         "Q1",
-        "Q2",
-        "Q3"
-      ],
-      "selection_reason": {
-        "Q1": "top_ranked",
-        "Q2": "top_ranked",
-        "Q3": "top_ranked"
-      },
-      "ranking_score": 1.275,
-      "ranking_by_question": {
-        "Q1": {
-          "relevance_score": 1.0,
-          "relevance_reason": "hallucination_definition_match",
-          "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
-          "tavily_score": 0.85,
-          "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.08,
-          "counter_bonus": 0.08,
-          "final_score": 1.275
-        },
-        "Q2": {
-          "relevance_score": 1.0,
-          "relevance_reason": "direct_comparison_match",
-          "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
-          "tavily_score": 0.85,
-          "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.08,
-          "counter_bonus": 0.08,
-          "final_score": 1.275
-        },
-        "Q3": {
-          "relevance_score": 0.9383,
-          "relevance_reason": "strong_title_match",
-          "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
-          "tavily_score": 0.85,
-          "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.08,
-          "counter_bonus": 0.08,
-          "final_score": 1.1963
-        }
-      },
-      "authors": [
-        "Fnu Neha",
-        "Deepshikha Bhati",
-        "Deepak Kumar Shukla"
-      ],
-      "publication_year": 2025,
-      "doi": "https://doi.org/10.20944/preprints202508.1022.v1",
-      "venue": "Applied Informatics",
-      "citation_count": 113,
-      "is_open_access": true,
-      "open_access_url": "https://www.preprints.org/frontend/manuscript/7cf07745f0b81c1891d1ede5913ec32e/download_pub",
-      "provider_name": "openalex"
-    },
-    {
-      "source_id": "OA-W7214699577",
-      "title": "Beyond text: quantifying the impact of figure-guided retrieval in biomedical RAG systems",
-      "url": "https://doi.org/10.3389/frai.2026.1861611",
-      "source_type": "peer_reviewed_paper",
-      "content_status": "full",
-      "is_useful": true,
-      "findings_yielded": 2,
-      "selected_for_questions": [
         "Q2"
       ],
       "selection_reason": {
+        "Q1": "quantitative_evidence",
         "Q2": "quantitative_evidence"
       },
-      "ranking_score": 1.275,
+      "ranking_score": 1.0119,
       "ranking_by_question": {
         "Q1": {
-          "relevance_score": 0.7797,
-          "relevance_reason": "hallucination_definition_match",
+          "relevance_score": 0.8364,
+          "relevance_reason": "abstract_match",
           "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
+          "planner_preference_score": 0.5,
           "tavily_score": 0.85,
           "content_status_bonus": 0.15,
           "quantitative_bonus": 0.08,
-          "counter_bonus": 0.08,
-          "final_score": 0.9941
+          "counter_bonus": 0.0,
+          "final_score": 0.9159
         },
         "Q2": {
-          "relevance_score": 1.0,
-          "relevance_reason": "direct_comparison_match",
+          "relevance_score": 0.9241,
+          "relevance_reason": "abstract_match",
           "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
+          "planner_preference_score": 0.5,
           "tavily_score": 0.85,
           "content_status_bonus": 0.15,
           "quantitative_bonus": 0.08,
-          "counter_bonus": 0.08,
-          "final_score": 1.275
+          "counter_bonus": 0.0,
+          "final_score": 1.0119
         },
         "Q3": {
-          "relevance_score": 0.6229,
-          "relevance_reason": "moderate_title_match",
+          "relevance_score": 0.2567,
+          "relevance_reason": "abstract_match",
           "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
+          "planner_preference_score": 0.5,
           "tavily_score": 0.85,
           "content_status_bonus": 0.15,
           "quantitative_bonus": 0.08,
-          "counter_bonus": 0.08,
-          "final_score": 0.7941
+          "counter_bonus": 0.0,
+          "final_score": 0.2811
+        },
+        "Q4": {
+          "relevance_score": 0.2211,
+          "relevance_reason": "generic_overlap_only",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.0,
+          "final_score": 0.2244
         }
       },
       "authors": [
-        "R J Venkatesh",
-        "Sudhakaran Gajendran",
-        "C. U. Om Kumar"
+        "Purvi Sankhe",
+        "Neeta P. Patil",
+        "Minakshi Ghorpade",
+        "Pratibha Prasad",
+        "Monisha Linkesh"
       ],
-      "publication_year": 2026,
-      "doi": "https://doi.org/10.3389/frai.2026.1861611",
-      "venue": "Frontiers in Artificial Intelligence",
-      "citation_count": 0,
+      "publication_year": 2025,
+      "doi": "https://doi.org/10.36948/ijfmr.2025.v07i06.61350",
+      "venue": "International Journal For Multidisciplinary Research",
+      "citation_count": 2,
       "is_open_access": true,
-      "open_access_url": "https://www.frontiersin.org/journals/artificial-intelligence/articles/10.3389/frai.2026.1861611/pdf",
+      "open_access_url": "https://www.ijfmr.com/papers/2025/6/61350.pdf",
       "provider_name": "openalex"
     },
     {
-      "source_id": "OA-W4414925442",
-      "title": "MEGA-RAG: a retrieval-augmented generation framework with multi-evidence guided answer refinement for mitigating hallucinations of LLMs in public health",
-      "url": "https://doi.org/10.3389/fpubh.2025.1635381",
-      "source_type": "peer_reviewed_paper",
+      "source_id": "OA-W7160670964",
+      "title": "A meta-analysis of the effect of generative AI on productivity and learning in programming",
+      "url": "https://arxiv.org/abs/2605.04779",
+      "source_type": "systematic_review",
       "content_status": "full",
       "is_useful": true,
       "findings_yielded": 3,
       "selected_for_questions": [
-        "Q2"
-      ],
-      "selection_reason": {
-        "Q2": "counter_evidence"
-      },
-      "ranking_score": 1.2734,
-      "ranking_by_question": {
-        "Q1": {
-          "relevance_score": 1.0,
-          "relevance_reason": "hallucination_definition_match",
-          "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
-          "tavily_score": 0.839,
-          "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.08,
-          "counter_bonus": 0.0,
-          "final_score": 1.1934
-        },
-        "Q2": {
-          "relevance_score": 1.0,
-          "relevance_reason": "direct_comparison_match",
-          "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
-          "tavily_score": 0.839,
-          "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.08,
-          "counter_bonus": 0.08,
-          "final_score": 1.2734
-        },
-        "Q3": {
-          "relevance_score": 0.6913,
-          "relevance_reason": "strong_title_match",
-          "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
-          "tavily_score": 0.839,
-          "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.08,
-          "counter_bonus": 0.0,
-          "final_score": 0.825
-        }
-      },
-      "authors": [
-        "Shan Xu",
-        "Zhaokun Yan",
-        "Chengxiao Dai",
-        "Fan Wu"
-      ],
-      "publication_year": 2025,
-      "doi": "https://doi.org/10.3389/fpubh.2025.1635381",
-      "venue": "Semantic Scholar",
-      "citation_count": 42,
-      "is_open_access": true,
-      "open_access_url": "https://www.frontiersin.org/journals/public-health/articles/10.3389/fpubh.2025.1635381/pdf",
-      "provider_name": "openalex"
-    },
-    {
-      "source_id": "OA-W4399305008",
-      "title": "KRAGEN: a knowledge graph-enhanced RAG framework for biomedical problem solving using large language models",
-      "url": "https://doi.org/10.1093/bioinformatics/btae353",
-      "source_type": "peer_reviewed_paper",
-      "content_status": "full",
-      "is_useful": true,
-      "findings_yielded": 2,
-      "selected_for_questions": [
-        "Q2",
-        "Q1"
-      ],
-      "selection_reason": {
-        "Q2": "top_ranked",
-        "Q1": "top_ranked"
-      },
-      "ranking_score": 1.2683,
-      "ranking_by_question": {
-        "Q1": {
-          "relevance_score": 1.0,
-          "relevance_reason": "hallucination_definition_match",
-          "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
-          "tavily_score": 0.805,
-          "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.08,
-          "counter_bonus": 0.08,
-          "final_score": 1.2683
-        },
-        "Q2": {
-          "relevance_score": 1.0,
-          "relevance_reason": "direct_comparison_match",
-          "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
-          "tavily_score": 0.805,
-          "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.08,
-          "counter_bonus": 0.08,
-          "final_score": 1.2683
-        },
-        "Q3": {
-          "relevance_score": 0.9174,
-          "relevance_reason": "abstract_match",
-          "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
-          "tavily_score": 0.805,
-          "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.08,
-          "counter_bonus": 0.08,
-          "final_score": 1.1635
-        }
-      },
-      "authors": [
-        "Nicholas Matsumoto",
-        "Jay Moran",
-        "Hyun‐Jun Choi",
-        "Miguel E Hernandez",
-        "Mythreye Venkatesan",
-        "Paul P. Wang",
-        "Jason H. Moore"
-      ],
-      "publication_year": 2024,
-      "doi": "https://doi.org/10.1093/bioinformatics/btae353",
-      "citation_count": 107,
-      "is_open_access": true,
-      "open_access_url": "https://doi.org/10.1093/bioinformatics/btae353",
-      "provider_name": "openalex"
-    },
-    {
-      "source_id": "OA-W4394947112",
-      "title": "A Survey on Retrieval-Augmented Text Generation for Large Language Models",
-      "url": "https://doi.org/10.1145/3805774",
-      "source_type": "peer_reviewed_paper",
-      "content_status": "full",
-      "is_useful": true,
-      "findings_yielded": 1,
-      "selected_for_questions": [
-        "Q1"
-      ],
-      "selection_reason": {
-        "Q1": "top_ranked"
-      },
-      "ranking_score": 1.2636,
-      "ranking_by_question": {
-        "Q1": {
-          "relevance_score": 1.0,
-          "relevance_reason": "strong_title_match",
-          "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
-          "tavily_score": 0.7739,
-          "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.08,
-          "counter_bonus": 0.08,
-          "final_score": 1.2636
-        },
-        "Q2": {
-          "relevance_score": 1.0,
-          "relevance_reason": "direct_comparison_match",
-          "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
-          "tavily_score": 0.7739,
-          "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.08,
-          "counter_bonus": 0.08,
-          "final_score": 1.2636
-        },
-        "Q3": {
-          "relevance_score": 0.8283,
-          "relevance_reason": "strong_title_match",
-          "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
-          "tavily_score": 0.7739,
-          "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.08,
-          "counter_bonus": 0.08,
-          "final_score": 1.0466
-        }
-      },
-      "authors": [
-        "Yizheng Huang",
-        "Jimmy Xiangji Huang"
-      ],
-      "publication_year": 2026,
-      "doi": "https://doi.org/10.1145/3805774",
-      "citation_count": 66,
-      "is_open_access": true,
-      "open_access_url": "https://doi.org/10.1145/3805774",
-      "provider_name": "openalex"
-    },
-    {
-      "source_id": "OA-W4393621491",
-      "title": "Retrieval-Augmented Generation Approach: Document Question Answering using Large Language Model",
-      "url": "https://doi.org/10.14569/ijacsa.2024.0150379",
-      "source_type": "peer_reviewed_paper",
-      "content_status": "full",
-      "is_useful": false,
-      "findings_yielded": 0,
-      "selected_for_questions": [
-        "Q3"
-      ],
-      "selection_reason": {
-        "Q3": "top_ranked"
-      },
-      "ranking_score": 1.258,
-      "ranking_by_question": {
-        "Q1": {
-          "relevance_score": 1.0,
-          "relevance_reason": "strong_title_match",
-          "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
-          "tavily_score": 0.737,
-          "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.08,
-          "counter_bonus": 0.08,
-          "final_score": 1.258
-        },
-        "Q2": {
-          "relevance_score": 1.0,
-          "relevance_reason": "direct_comparison_match",
-          "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
-          "tavily_score": 0.737,
-          "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.08,
-          "counter_bonus": 0.08,
-          "final_score": 1.258
-        },
-        "Q3": {
-          "relevance_score": 1.0,
-          "relevance_reason": "strong_title_match",
-          "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
-          "tavily_score": 0.737,
-          "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.08,
-          "counter_bonus": 0.08,
-          "final_score": 1.258
-        }
-      },
-      "authors": [
-        "Kurnia Muludi",
-        "Kaira Milani Fitria",
-        "Joko Triloka",
-        "Sutedi Sutedi"
-      ],
-      "publication_year": 2024,
-      "doi": "https://doi.org/10.14569/ijacsa.2024.0150379",
-      "citation_count": 37,
-      "is_open_access": true,
-      "open_access_url": "http://thesai.org/Downloads/Volume15No3/Paper_79-Retrieval_Augmented_Generation_Approach.pdf",
-      "provider_name": "openalex"
-    },
-    {
-      "source_id": "OA-W4405030403",
-      "title": "Understanding the Fundamental Design Decisions of Retrieval-Augmented Generation Systems",
-      "url": "https://doi.org/10.1145/3802824",
-      "source_type": "peer_reviewed_paper",
-      "content_status": "full",
-      "is_useful": true,
-      "findings_yielded": 1,
-      "selected_for_questions": [
-        "Q3"
-      ],
-      "selection_reason": {
-        "Q3": "top_ranked"
-      },
-      "ranking_score": 1.2428,
-      "ranking_by_question": {
-        "Q1": {
-          "relevance_score": 1.0,
-          "relevance_reason": "strong_title_match",
-          "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
-          "tavily_score": 0.6355,
-          "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.08,
-          "counter_bonus": 0.08,
-          "final_score": 1.2428
-        },
-        "Q2": {
-          "relevance_score": 1.0,
-          "relevance_reason": "direct_comparison_match",
-          "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
-          "tavily_score": 0.6355,
-          "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.08,
-          "counter_bonus": 0.08,
-          "final_score": 1.2428
-        },
-        "Q3": {
-          "relevance_score": 1.0,
-          "relevance_reason": "strong_title_match",
-          "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
-          "tavily_score": 0.6355,
-          "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.08,
-          "counter_bonus": 0.08,
-          "final_score": 1.2428
-        }
-      },
-      "authors": [
-        "Shengming Zhao",
-        "Yuchen Shao",
-        "Yuheng Huang",
-        "Jiayang Song",
-        "Chengcheng Wan",
-        "Лей Ма"
-      ],
-      "publication_year": 2026,
-      "doi": "https://doi.org/10.1145/3802824",
-      "citation_count": 7,
-      "is_open_access": true,
-      "open_access_url": "https://arxiv.org/pdf/2411.19463",
-      "provider_name": "openalex"
-    },
-    {
-      "source_id": "S2-9aec70e89bc661dd",
-      "title": "Fine grained reranking via caption bridging for knowledge augmented visual question answering",
-      "url": "https://www.semanticscholar.org/paper/9aec70e89bc661dd462948681574f8cf914f9745",
-      "source_type": "peer_reviewed_paper",
-      "content_status": "full",
-      "is_useful": true,
-      "findings_yielded": 1,
-      "selected_for_questions": [
         "Q1",
-        "Q2",
         "Q3"
       ],
       "selection_reason": {
         "Q1": "top_ranked",
-        "Q2": "top_ranked",
-        "Q3": "top_ranked"
+        "Q3": "quantitative_evidence"
       },
-      "ranking_score": 1.175,
+      "ranking_score": 1.0112,
       "ranking_by_question": {
         "Q1": {
-          "relevance_score": 1.0,
-          "relevance_reason": "hallucination_definition_match",
-          "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
+          "relevance_score": 0.913,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 1.0,
+          "planner_preference_score": 0.5,
           "tavily_score": 0.85,
-          "content_status_bonus": 0.05,
+          "content_status_bonus": 0.15,
           "quantitative_bonus": 0.08,
-          "counter_bonus": 0.08,
-          "final_score": 1.175
+          "counter_bonus": 0.0,
+          "final_score": 1.0112
         },
         "Q2": {
-          "relevance_score": 1.0,
-          "relevance_reason": "direct_comparison_match",
-          "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
+          "relevance_score": 0.3872,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 1.0,
+          "planner_preference_score": 0.5,
           "tavily_score": 0.85,
-          "content_status_bonus": 0.05,
+          "content_status_bonus": 0.15,
           "quantitative_bonus": 0.08,
-          "counter_bonus": 0.08,
-          "final_score": 1.175
+          "counter_bonus": 0.0,
+          "final_score": 0.4288
         },
         "Q3": {
-          "relevance_score": 1.0,
+          "relevance_score": 0.6315,
           "relevance_reason": "abstract_match",
-          "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
+          "source_quality_score": 1.0,
+          "planner_preference_score": 0.5,
           "tavily_score": 0.85,
-          "content_status_bonus": 0.05,
+          "content_status_bonus": 0.15,
           "quantitative_bonus": 0.08,
-          "counter_bonus": 0.08,
-          "final_score": 1.175
+          "counter_bonus": 0.0,
+          "final_score": 0.6994
+        },
+        "Q4": {
+          "relevance_score": 0.1915,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 1.0,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.0,
+          "final_score": 0.1968
         }
       },
       "authors": [
-        "Jun-Zhe Feng",
-        "Tao Liu",
-        "Yu-Hang Wu",
-        "Zi-Neng Ng",
-        "M. Ariannejad",
-        "Jian-Ding Tan",
-        "Mohammad Arif Sobhan Bhuiyan",
-        "Chia-Chao Kang"
+        "Sebastian Maier",
+        "Moritz Gunzenhäuser",
+        "Jonas Schweisthal",
+        "Manuel Schneider",
+        "Stefan Feuerriegel"
       ],
       "publication_year": 2026,
-      "doi": "https://doi.org/10.1038/s41598-026-57349-w",
-      "venue": "Scientific Reports",
-      "citation_count": 0,
+      "doi": "https://doi.org/10.48550/arXiv.2605.04779",
+      "venue": "arXiv.org",
+      "citation_count": 2,
       "is_open_access": true,
-      "open_access_url": "https://www.nature.com/articles/s41598-026-57349-w_reference.pdf",
-      "provider_name": "semanticscholar"
+      "open_access_url": "https://arxiv.org/pdf/2605.04779",
+      "provider_name": "openalex"
     },
     {
-      "source_id": "S14",
-      "title": "Hallucination to truth: a review of fact-checking and factuality evaluation in large language models | Artificial Intelligence Review | Springer Nature Link",
-      "url": "https://link.springer.com/article/10.1007/s10462-025-11454-w",
+      "source_id": "S58",
+      "title": "[2510.10165] AI-Assisted Programming Decreases the Productivity of Experienced Developers by Increasing the Technical Debt and Maintenance Burden",
+      "url": "https://arxiv.org/abs/2510.10165",
+      "source_type": "preprint",
+      "content_status": "full",
+      "is_useful": true,
+      "findings_yielded": 1,
+      "selected_for_questions": [
+        "Q4"
+      ],
+      "selection_reason": {
+        "Q4": "counter_evidence"
+      },
+      "ranking_score": 0.9903,
+      "ranking_by_question": {
+        "Q1": {
+          "relevance_score": 0.3935,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.8,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.7492,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.0,
+          "final_score": 0.4102
+        },
+        "Q2": {
+          "relevance_score": 0.2387,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.8,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.7492,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.0,
+          "final_score": 0.2488
+        },
+        "Q3": {
+          "relevance_score": 0.21,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.8,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.7492,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.0,
+          "final_score": 0.2189
+        },
+        "Q4": {
+          "relevance_score": 0.95,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.8,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.7492,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.08,
+          "final_score": 0.9903
+        }
+      }
+    },
+    {
+      "source_id": "OA-W7165898600",
+      "title": "Comparative Evaluation of Gemini and DeepSeek for LLM-Generated Code Quality and Architectural Robustness in Backend Software Engineering",
+      "url": "https://doi.org/10.3390/electronics15132805",
+      "source_type": "peer_reviewed_paper",
+      "content_status": "full",
+      "is_useful": true,
+      "findings_yielded": 1,
+      "selected_for_questions": [
+        "Q4"
+      ],
+      "selection_reason": {
+        "Q4": "top_ranked"
+      },
+      "ranking_score": 0.9625,
+      "ranking_by_question": {
+        "Q1": {
+          "relevance_score": 0.2166,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.5,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.0,
+          "final_score": 0.2258
+        },
+        "Q2": {
+          "relevance_score": 0.4766,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.5,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.0,
+          "final_score": 0.4969
+        },
+        "Q3": {
+          "relevance_score": 0.4033,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.5,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.0,
+          "final_score": 0.4205
+        },
+        "Q4": {
+          "relevance_score": 1.0,
+          "relevance_reason": "strong_title_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.5,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.0,
+          "final_score": 0.9625
+        }
+      },
+      "authors": [
+        "Marko Horvat",
+        "Iva Ursić",
+        "Klara Krmpotić"
+      ],
+      "publication_year": 2026,
+      "doi": "https://doi.org/10.3390/electronics15132805",
+      "citation_count": 0,
+      "is_open_access": true,
+      "open_access_url": "https://www.mdpi.com/2079-9292/15/13/2805/pdf?version=1782391733",
+      "provider_name": "openalex"
+    },
+    {
+      "source_id": "OA-W7153290859",
+      "title": "Code generation with large language models: a survey from neural program synthesis to autonomous software development",
+      "url": "https://doi.org/10.1007/s10489-026-07230-0",
+      "source_type": "peer_reviewed_paper",
+      "content_status": "full",
+      "is_useful": true,
+      "findings_yielded": 1,
+      "selected_for_questions": [
+        "Q4"
+      ],
+      "selection_reason": {
+        "Q4": "top_ranked"
+      },
+      "ranking_score": 0.9611,
+      "ranking_by_question": {
+        "Q1": {
+          "relevance_score": 0.1166,
+          "relevance_reason": "generic_overlap_only",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.5716,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.0,
+          "final_score": 0.0941
+        },
+        "Q2": {
+          "relevance_score": 0.5076,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.5716,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.0,
+          "final_score": 0.5347
+        },
+        "Q3": {
+          "relevance_score": 0.3567,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.5716,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.0,
+          "final_score": 0.3757
+        },
+        "Q4": {
+          "relevance_score": 0.9876,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.5716,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.0,
+          "final_score": 0.9611
+        }
+      },
+      "authors": [
+        "Burak Gülmez"
+      ],
+      "publication_year": 2026,
+      "doi": "https://doi.org/10.1007/s10489-026-07230-0",
+      "citation_count": 2,
+      "is_open_access": true,
+      "open_access_url": "https://link.springer.com/content/pdf/10.1007/s10489-026-07230-0.pdf",
+      "provider_name": "openalex"
+    },
+    {
+      "source_id": "OA-W7214969399",
+      "title": "Generative AI Assistants in Software Development: Productivity Gains, Code Quality, and Security Trade-offs",
+      "url": "https://doi.org/10.66104/z67gjz21",
       "source_type": "peer_reviewed_paper",
       "content_status": "full",
       "is_useful": false,
       "findings_yielded": 0,
+      "selected_for_questions": [
+        "Q1"
+      ],
+      "selection_reason": {
+        "Q1": "top_ranked"
+      },
+      "ranking_score": 0.9291,
+      "ranking_by_question": {
+        "Q1": {
+          "relevance_score": 0.7908,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.08,
+          "final_score": 0.9291
+        },
+        "Q2": {
+          "relevance_score": 0.6645,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.08,
+          "final_score": 0.7808
+        },
+        "Q3": {
+          "relevance_score": 0.3733,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.08,
+          "final_score": 0.4387
+        },
+        "Q4": {
+          "relevance_score": 0.5324,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.08,
+          "final_score": 0.583
+        }
+      },
+      "authors": [
+        "Rikelmy Rodrigues Menezes"
+      ],
+      "publication_year": 2026,
+      "doi": "https://doi.org/10.66104/z67gjz21",
+      "venue": "Nexus Science Review",
+      "citation_count": 2,
+      "is_open_access": true,
+      "open_access_url": "https://nexussr.org.uk/nexussr/article/download/7906/7263",
+      "provider_name": "openalex"
+    },
+    {
+      "source_id": "S2-b24b59568412eeca",
+      "title": "Task-to-Model Optimization for Enterprise LLM Coding Assistants: A Data-Driven Framework for Cost-Optimal Routing",
+      "url": "https://www.semanticscholar.org/paper/b24b59568412eeca75373c0599be239e22fb1ec1",
+      "source_type": "academic",
+      "content_status": "full",
+      "is_useful": true,
+      "findings_yielded": 4,
+      "selected_for_questions": [
+        "Q1"
+      ],
+      "selection_reason": {
+        "Q1": "top_ranked"
+      },
+      "ranking_score": 0.917,
+      "ranking_by_question": {
+        "Q1": {
+          "relevance_score": 0.863,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.82,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.08,
+          "final_score": 0.917
+        },
+        "Q2": {
+          "relevance_score": 0.134,
+          "relevance_reason": "generic_overlap_only",
+          "source_quality_score": 0.82,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.08,
+          "final_score": 0.0946
+        },
+        "Q3": {
+          "relevance_score": 0.02,
+          "relevance_reason": "generic_overlap_only",
+          "source_quality_score": 0.82,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.08,
+          "final_score": 0.008
+        },
+        "Q4": {
+          "relevance_score": 0.0211,
+          "relevance_reason": "generic_overlap_only",
+          "source_quality_score": 0.82,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.08,
+          "final_score": 0.0085
+        }
+      },
+      "authors": [
+        "Srinivasan Manoharan",
+        "Junhua Zhao",
+        "Fang Tu",
+        "Hai-Feng Wu",
+        "Jian Wan",
+        "M. MaliahRajan",
+        "Ashwin Hegde",
+        "M. Sasidharan",
+        "Kalyan Chakravarthi Podamekala"
+      ],
+      "publication_year": 2026,
+      "citation_count": 0,
+      "is_open_access": false,
+      "provider_name": "semanticscholar"
+    },
+    {
+      "source_id": "S2-25094a3673820557",
+      "title": "Vibe Coding in Practice: Flow, Technical Debt, and Guidelines for Sustainable Use",
+      "url": "https://www.semanticscholar.org/paper/25094a36738205570343d297faa4c2c1d9805c89",
+      "source_type": "preprint",
+      "content_status": "full",
+      "is_useful": true,
+      "findings_yielded": 1,
+      "selected_for_questions": [
+        "Q4"
+      ],
+      "selection_reason": {
+        "Q4": "top_ranked"
+      },
+      "ranking_score": 0.9127,
+      "ranking_by_question": {
+        "Q1": {
+          "relevance_score": 0.3435,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.8,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.08,
+          "final_score": 0.3632
+        },
+        "Q2": {
+          "relevance_score": 0.2387,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.8,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.08,
+          "final_score": 0.2524
+        },
+        "Q3": {
+          "relevance_score": 0.19,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.8,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.08,
+          "final_score": 0.2009
+        },
+        "Q4": {
+          "relevance_score": 0.863,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.8,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.08,
+          "final_score": 0.9127
+        }
+      },
+      "authors": [
+        "Muhammad Waseem",
+        "Aakash Ahmad",
+        "Kai-Kristian Kemell",
+        "Jussi Rasku",
+        "Sami Lahti",
+        "K. Mäkelä",
+        "Pekka Abrahamsson"
+      ],
+      "publication_year": 2025,
+      "doi": "https://doi.org/10.48550/arXiv.2512.11922",
+      "venue": "arXiv.org",
+      "citation_count": 4,
+      "is_open_access": false,
+      "provider_name": "semanticscholar"
+    },
+    {
+      "source_id": "OA-W7168015462",
+      "title": "Developers’ Experience with Generative AI - First Insights from an Empirical Mixed-Methods Field Study",
+      "url": "https://doi.org/10.1145/3786583.3786870",
+      "source_type": "peer_reviewed_paper",
+      "content_status": "full",
+      "is_useful": true,
+      "findings_yielded": 2,
       "selected_for_questions": [
         "Q1"
       ],
       "selection_reason": {
         "Q1": "counter_evidence"
       },
-      "ranking_score": 1.1658,
+      "ranking_score": 0.8602,
       "ranking_by_question": {
         "Q1": {
-          "relevance_score": 1.0,
-          "relevance_reason": "hallucination_definition_match",
-          "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
-          "tavily_score": 0.6552,
-          "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.0,
-          "counter_bonus": 0.08,
-          "final_score": 1.1658
-        },
-        "Q2": {
-          "relevance_score": 1.0,
-          "relevance_reason": "direct_comparison_match",
-          "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
-          "tavily_score": 0.6552,
-          "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.0,
-          "counter_bonus": 0.08,
-          "final_score": 1.1658
-        },
-        "Q3": {
-          "relevance_score": 0.7835,
+          "relevance_score": 0.7321,
           "relevance_reason": "abstract_match",
           "source_quality_score": 0.95,
-          "planner_preference_score": 1.0,
-          "tavily_score": 0.6552,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.08,
+          "final_score": 0.8602
+        },
+        "Q2": {
+          "relevance_score": 0.3621,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.0,
+          "final_score": 0.3965
+        },
+        "Q3": {
+          "relevance_score": 0.1867,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.0,
+          "final_score": 0.2044
+        },
+        "Q4": {
+          "relevance_score": 0.0704,
+          "relevance_reason": "generic_overlap_only",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.85,
           "content_status_bonus": 0.15,
           "quantitative_bonus": 0.0,
-          "counter_bonus": 0.08,
-          "final_score": 0.9134
+          "counter_bonus": 0.0,
+          "final_score": 0.0757
+        }
+      },
+      "authors": [
+        "Charlotte Brandebusemeyer",
+        "Tobias Schimmer",
+        "Bert Arnrich"
+      ],
+      "publication_year": 2026,
+      "doi": "https://doi.org/10.1145/3786583.3786870",
+      "venue": "SEIP@ICSE",
+      "citation_count": 7,
+      "is_open_access": true,
+      "open_access_url": "https://doi.org/10.1145/3786583.3786870",
+      "provider_name": "openalex"
+    },
+    {
+      "source_id": "S1",
+      "title": "Navigating the Complexity of Generative AI Adoption in Software Engineering | ACM Transactions on Software Engineering and Methodology",
+      "url": "https://dl.acm.org/doi/10.1145/3652154",
+      "source_type": "peer_reviewed_paper",
+      "content_status": "full",
+      "is_useful": false,
+      "findings_yielded": 0,
+      "selected_for_questions": [
+        "Q3"
+      ],
+      "selection_reason": {
+        "Q3": "top_ranked"
+      },
+      "ranking_score": 0.787,
+      "ranking_by_question": {
+        "Q1": {
+          "relevance_score": 0.3563,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.5764,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.0,
+          "final_score": 0.3755
+        },
+        "Q2": {
+          "relevance_score": 0.2281,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.5764,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.0,
+          "final_score": 0.2404
+        },
+        "Q3": {
+          "relevance_score": 0.7467,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.5764,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.08,
+          "counter_bonus": 0.0,
+          "final_score": 0.787
+        },
+        "Q4": {
+          "relevance_score": 0.4324,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.5764,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.0,
+          "final_score": 0.4211
         }
       }
     },
     {
-      "source_id": "S43",
-      "title": "Benchmarking retrieval augmented generation LLMs for Arabic noise robustness",
-      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13526670",
-      "source_type": "government",
+      "source_id": "S8",
+      "title": "Exploring the role of generative AI in enhancing cybersecurity in software development life cycle",
+      "url": "https://www.sciencedirect.com/science/article/pii/S2590005625001365",
+      "source_type": "peer_reviewed_paper",
       "content_status": "full",
       "is_useful": true,
-      "findings_yielded": 1,
+      "findings_yielded": 2,
+      "selected_for_questions": [
+        "Q4",
+        "Q2"
+      ],
+      "selection_reason": {
+        "Q4": "top_ranked",
+        "Q2": "counter_evidence"
+      },
+      "ranking_score": 0.7206,
+      "ranking_by_question": {
+        "Q1": {
+          "relevance_score": 0.3563,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.4587,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.0,
+          "final_score": 0.3407
+        },
+        "Q2": {
+          "relevance_score": 0.3872,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.4587,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.08,
+          "final_score": 0.4012
+        },
+        "Q3": {
+          "relevance_score": 0.2333,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.4587,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.0,
+          "final_score": 0.2231
+        },
+        "Q4": {
+          "relevance_score": 0.7535,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.4587,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.0,
+          "final_score": 0.7206
+        }
+      }
+    },
+    {
+      "source_id": "S2-0e41ae9360a96243",
+      "title": "Navigating the Complexity of Generative AI Adoption in Software Engineering",
+      "url": "https://www.semanticscholar.org/paper/0e41ae9360a962430650d5bb174de223aa8deea5",
+      "source_type": "peer_reviewed_paper",
+      "content_status": "full",
+      "is_useful": false,
+      "findings_yielded": 0,
+      "selected_for_questions": [
+        "Q3",
+        "Q4"
+      ],
+      "selection_reason": {
+        "Q3": "top_ranked",
+        "Q4": "top_ranked"
+      },
+      "ranking_score": 0.6947,
+      "ranking_by_question": {
+        "Q1": {
+          "relevance_score": 0.4372,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.4565,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.0,
+          "final_score": 0.418
+        },
+        "Q2": {
+          "relevance_score": 0.3621,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.4565,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.0,
+          "final_score": 0.3461
+        },
+        "Q3": {
+          "relevance_score": 0.7267,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.4565,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.0,
+          "final_score": 0.6947
+        },
+        "Q4": {
+          "relevance_score": 0.6746,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.4565,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.0,
+          "final_score": 0.6449
+        }
+      },
+      "venue": "Semantic Scholar",
+      "provider_name": "semanticscholar"
+    },
+    {
+      "source_id": "S2-5dce72bbce8b73b0",
+      "title": "On the Relationship between Software Complexity and Security",
+      "url": "https://www.semanticscholar.org/paper/On-the-Relationship-between-Software-Complexity-and-Alenezi-Zarour/5dce72bbce8b73b0bf108da2d52d43664fd961b1",
+      "source_type": "peer_reviewed_paper",
+      "content_status": "full",
+      "is_useful": true,
+      "findings_yielded": 3,
+      "selected_for_questions": [
+        "Q2",
+        "Q3"
+      ],
+      "selection_reason": {
+        "Q2": "top_ranked",
+        "Q3": "top_ranked"
+      },
+      "ranking_score": 0.633,
+      "ranking_by_question": {
+        "Q1": {
+          "relevance_score": 0.2166,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.0548,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.0,
+          "final_score": 0.194
+        },
+        "Q2": {
+          "relevance_score": 0.5872,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.0548,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.0,
+          "final_score": 0.526
+        },
+        "Q3": {
+          "relevance_score": 0.7067,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.0548,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.0,
+          "final_score": 0.633
+        },
+        "Q4": {
+          "relevance_score": 0.5627,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.95,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.0548,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.0,
+          "final_score": 0.504
+        }
+      },
+      "venue": "Semantic Scholar",
+      "provider_name": "semanticscholar"
+    },
+    {
+      "source_id": "S10",
+      "title": "AI in Software Development: Tools, Risks, & Careers",
+      "url": "https://www.pace.edu/news/ai-software-development",
+      "source_type": "academic",
+      "content_status": "full",
+      "is_useful": false,
+      "findings_yielded": 0,
       "selected_for_questions": [
         "Q3"
       ],
       "selection_reason": {
         "Q3": "counter_evidence"
       },
-      "ranking_score": 1.1201,
+      "ranking_score": 0.5075,
       "ranking_by_question": {
         "Q1": {
-          "relevance_score": 0.6644,
-          "relevance_reason": "strong_title_match",
-          "source_quality_score": 0.85,
-          "planner_preference_score": 0.0,
-          "tavily_score": 0.6005,
+          "relevance_score": 0.4435,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.82,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.3863,
           "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.08,
+          "quantitative_bonus": 0.0,
           "counter_bonus": 0.0,
-          "final_score": 0.6196
+          "final_score": 0.4049
         },
         "Q2": {
-          "relevance_score": 0.989,
-          "relevance_reason": "direct_comparison_match",
-          "source_quality_score": 0.85,
-          "planner_preference_score": 1.0,
-          "tavily_score": 0.6005,
+          "relevance_score": 0.1591,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.82,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.3863,
           "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.08,
+          "quantitative_bonus": 0.0,
           "counter_bonus": 0.0,
-          "final_score": 1.1201
+          "final_score": 0.1453
         },
         "Q3": {
-          "relevance_score": 1.0,
-          "relevance_reason": "strong_title_match",
-          "source_quality_score": 0.85,
-          "planner_preference_score": 0.0,
-          "tavily_score": 0.6005,
+          "relevance_score": 0.5111,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.82,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.3863,
           "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.08,
+          "quantitative_bonus": 0.0,
           "counter_bonus": 0.08,
-          "final_score": 1.0126
+          "final_score": 0.5075
+        },
+        "Q4": {
+          "relevance_score": 0.5535,
+          "relevance_reason": "abstract_match",
+          "source_quality_score": 0.82,
+          "planner_preference_score": 0.5,
+          "tavily_score": 0.3863,
+          "content_status_bonus": 0.15,
+          "quantitative_bonus": 0.0,
+          "counter_bonus": 0.0,
+          "final_score": 0.5053
         }
       }
-    },
-    {
-      "source_id": "OA-W7119234033",
-      "title": "Detecting Hallucinations in Retrieval-Augmented Generation via Semantic-level Internal Reasoning Graph",
-      "url": "http://arxiv.org/abs/2601.03052",
-      "source_type": "preprint",
-      "content_status": "full",
-      "is_useful": false,
-      "findings_yielded": 0,
-      "selected_for_questions": [
-        "Q2"
-      ],
-      "selection_reason": {
-        "Q2": "counter_evidence"
-      },
-      "ranking_score": 0.9317,
-      "ranking_by_question": {
-        "Q1": {
-          "relevance_score": 1.0,
-          "relevance_reason": "hallucination_definition_match",
-          "source_quality_score": 0.8,
-          "planner_preference_score": 0.0,
-          "tavily_score": 0.6781,
-          "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.0,
-          "counter_bonus": 0.0,
-          "final_score": 0.8517
-        },
-        "Q2": {
-          "relevance_score": 1.0,
-          "relevance_reason": "direct_comparison_match",
-          "source_quality_score": 0.8,
-          "planner_preference_score": 0.0,
-          "tavily_score": 0.6781,
-          "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.0,
-          "counter_bonus": 0.08,
-          "final_score": 0.9317
-        },
-        "Q3": {
-          "relevance_score": 0.7174,
-          "relevance_reason": "strong_title_match",
-          "source_quality_score": 0.8,
-          "planner_preference_score": 0.0,
-          "tavily_score": 0.6781,
-          "content_status_bonus": 0.15,
-          "quantitative_bonus": 0.0,
-          "counter_bonus": 0.0,
-          "final_score": 0.611
-        }
-      },
-      "authors": [
-        "Jianpeng Hu",
-        "Yanzeng Li",
-        "Jialun Zhong",
-        "Wenfa Qi",
-        "Zou Lei"
-      ],
-      "publication_year": 2026,
-      "doi": "https://doi.org/10.18653/v1/2026.findings-acl.1385",
-      "citation_count": 1,
-      "is_open_access": true,
-      "open_access_url": "https://arxiv.org/pdf/2601.03052",
-      "provider_name": "openalex"
     }
   ],
   "source_finding_map": {
-    "OA-W7114889968": [
-      "Q1-F1"
+    "OA-W7162323204": [
+      "Q1-F1",
+      "Q1-F2"
     ],
-    "OA-W4413114507": [
-      "Q1-F2",
+    "OA-W4416578578": [
+      "Q1-F3",
+      "Q1-F4",
+      "Q2-F6",
+      "Q2-F7"
+    ],
+    "OA-W7163154377": [
+      "Q1-F5",
       "Q1-F6",
-      "Q3-F1",
+      "Q2-F2",
       "Q2-F3"
     ],
-    "S2-9AEC70E89BC661DD": [
-      "Q1-F3"
+    "S2-B73F8C89BA8509F1": [
+      "Q1-F7",
+      "Q1-F8",
+      "Q2-F4",
+      "Q2-F5"
     ],
-    "S2-9aec70e89bc661dd": [
-      "Q1-F3"
+    "S2-b73f8c89ba8509f1": [
+      "Q1-F7",
+      "Q1-F8",
+      "Q2-F4",
+      "Q2-F5"
     ],
-    "OA-W4414925442": [
-      "Q1-F4",
-      "Q2-F1",
+    "S2-2E5C5550120A554D": [
+      "Q2-F1"
+    ],
+    "S2-2e5c5550120a554d": [
+      "Q2-F1"
+    ],
+    "OA-W4415027142": [
+      "Q3-F1"
+    ],
+    "S58": [
+      "Q4-F1"
+    ],
+    "S2-25094A3673820557": [
+      "Q4-F2"
+    ],
+    "S2-25094a3673820557": [
+      "Q4-F2"
+    ],
+    "OA-W7168015462": [
+      "Q1-F9",
+      "Q1-F10"
+    ],
+    "S2-B24B59568412EECA": [
+      "Q1-F11",
+      "Q1-F12",
+      "Q2-F10",
+      "Q4-F4"
+    ],
+    "S2-b24b59568412eeca": [
+      "Q1-F11",
+      "Q1-F12",
+      "Q2-F10",
+      "Q4-F4"
+    ],
+    "S8": [
+      "Q2-F8",
+      "Q2-F9"
+    ],
+    "OA-W7160670964": [
+      "Q2-F11",
+      "Q3-F3",
+      "Q3-F4"
+    ],
+    "S19": [
       "Q3-F2"
     ],
-    "OA-W7214699577": [
-      "Q1-F5",
-      "Q2-F2"
+    "OA-W7165898600": [
+      "Q4-F3"
     ],
-    "OA-W4399305008": [
-      "Q1-F7",
-      "Q1-F8"
+    "S2-5DCE72BBCE8B73B0": [
+      "Q1-F13",
+      "Q2-F12",
+      "Q3-F5"
     ],
-    "S43": [
-      "Q3-F3"
+    "S2-5dce72bbce8b73b0": [
+      "Q1-F13",
+      "Q2-F12",
+      "Q3-F5"
     ],
-    "OA-W4394947112": [
-      "Q1-F9"
-    ],
-    "OA-W4405030403": [
-      "Q3-F4"
+    "OA-W7153290859": [
+      "Q4-F5"
     ]
   },
   "statistics": {
-    "candidate_sources": 583,
-    "canonical_sources": 583,
-    "selected_sources": 12,
-    "useful_sources": 9,
-    "idle_sources": 3,
-    "source_yield_rate": 0.75,
+    "candidate_sources": 672,
+    "canonical_sources": 672,
+    "selected_sources": 18,
+    "useful_sources": 13,
+    "idle_sources": 5,
+    "source_yield_rate": 0.72,
     "epistemic_triplet": {
-      "finding_count": 16,
-      "source_count": 9,
-      "independent_source_count": 10
+      "finding_count": 35,
+      "source_count": 13,
+      "independent_source_count": 21
     },
-    "retrieval_successes": 12,
+    "retrieval_successes": 18,
     "retrieval_failures": 0,
-    "sources_with_findings": 10,
-    "total_findings": 16,
-    "support_findings": 11,
-    "counter_findings": 2,
-    "limitation_findings": 1,
-    "trade_off_findings": 0,
-    "context_findings": 2,
-    "quantitative_findings": 6,
-    "unique_independent_sources": 10,
-    "concentration_ratio": 0.25,
+    "sources_with_findings": 21,
+    "total_findings": 35,
+    "support_findings": 13,
+    "counter_findings": 4,
+    "limitation_findings": 8,
+    "trade_off_findings": 3,
+    "context_findings": 7,
+    "quantitative_findings": 17,
+    "unique_independent_sources": 21,
+    "concentration_ratio": 0.11,
     "contradictions_detected": 2,
-    "unmet_evidence_gaps": 4,
-    "evidence_diversity_score": 0.88
+    "unmet_evidence_gaps": 2,
+    "evidence_diversity_score": 1.0
   }
 }
